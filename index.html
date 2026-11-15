@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FABI — Pastel Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins & Noto Sans JP for exact typographic feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for crisp icons matching the reference -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        pastel: {
+                            50: '#fff5f8',
+                            100: '#ffe8f0',
+                            200: '#ffd1e1',
+                            300: '#ffb0cc',
+                            400: '#f48fb1',
+                            500: '#d87a9e', // Dusty rose primary accent (replaces slate blue #5b789c)
+                            600: '#b85c80', // Darker rose for borders & strong accents
+                            700: '#8c3f5d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Unborn 8.0 Pink Pointer - https://www.cursors-4u.com/cursor/unborn-8-0-pink-pointer */
+        *, *::before, *::after, html, body, a, button, input, [role="button"] {
+            cursor: url('https://cdn.cursors-4u.net/previews/unborn-8-0-pink-pointer-19947d27-32.webp') 32 32, auto !important;
+        }
+        /* End www.Cursors-4U.com Code */
+
+        /* Reset & Base Styling */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #f8dce6;
+            color: #4a2c38;
+        }
+
+        /* Background Principal Fijo con integración Rosa Pastel */
+        .site-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/background3.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        /* Sutileza de superposición pastel como en la referencia (degradado lateral suave a claro) */
+        .site-bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(
+                90deg,
+                rgba(216, 122, 158, 0.48) 0%,
+                rgba(240, 185, 207, 0.32) 45%,
+                rgba(255, 245, 249, 0.55) 100%
+            );
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        /* Tarjetas Glassmorphism Rosa Empolvado (Reemplaza el azul #5b789c de la referencia) */
+        .glass-pink-solid {
+            background: rgba(214, 126, 160, 0.80);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 14px 30px -6px rgba(138, 62, 92, 0.22),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.35);
+            border: 1.5px solid rgba(255, 255, 255, 0.28);
+        }
+
+        /* Tarjetas Glassmorphism Blancas con Borde Rosa Empolvado (About Me, Reloj, Barra inferior) */
+        .glass-white-bordered {
+            background: rgba(255, 250, 252, 0.84);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2.2px solid rgba(196, 108, 142, 0.75);
+            box-shadow: 0 12px 26px -6px rgba(145, 70, 100, 0.16),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.9);
+        }
+
+        /* Recuadro del Reloj y Calendario — Glassmorphism Auténtico */
+        .clock-glass-card {
+            background: rgba(255, 246, 250, 0.44);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(255, 255, 255, 0.68);
+            box-shadow: 0 10px 26px -6px rgba(138, 62, 92, 0.18),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.82);
+        }
+
+        /* Tarjetas de los 4 Recuadros con GIF */
+        .gif-card {
+            background: rgba(255, 248, 251, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 12px 24px -6px rgba(138, 62, 92, 0.20);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+        }
+
+        .gif-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 32px -6px rgba(138, 62, 92, 0.30);
+        }
+
+        /* Degradado inferior en las tarjetas GIF igual a la referencia */
+        .gif-card-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(196, 104, 140, 0.94) 0%,
+                rgba(214, 126, 160, 0.70) 38%,
+                rgba(255, 255, 255, 0) 100%
+            );
+        }
+
+        /* Animación sutil para el indicador En Línea */
+        @keyframes pulse-online {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 5px rgba(46, 213, 115, 0);
+            }
+        }
+
+        .online-dot {
+            background-color: #2ed573;
+            animation: pulse-online 2.2s infinite;
+        }
+
+        /* Sombra suave para el render principal de FABI */
+        .fabi-render {
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(-6px 8px 16px rgba(115, 45, 72, 0.28));
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, filter;
+        }
+
+        /* 1. Efecto Hover en Avatares: Inner Shine + Zoom contenido en el círculo */
+        .avatar-circle-inner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            transform: translateZ(0);
+        }
+
+        .avatar-circle-inner img {
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .avatar-circle-inner:hover img {
+            transform: scale(1.18);
+        }
+
+        .avatar-circle-inner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -135%;
+            width: 85%;
+            height: 100%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 240, 247, 0.58) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-24deg);
+            transition: left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .avatar-circle-inner:hover::after {
+            left: 145%;
+        }
+
+        .avatar-circle-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            box-shadow: inset 0 0 14px rgba(255, 255, 255, 0);
+            transition: box-shadow 0.4s ease;
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        .avatar-circle-inner:hover::before {
+            box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.72);
+        }
+
+        /* Zoom inicial pronunciado y centrado en el rostro exclusivo para el avatar de FABI */
+        .fabi-avatar-zoom {
+            object-position: 50% 20%;
+            transform: scale(1.48);
+            transform-origin: 50% 24%;
+        }
+
+        .avatar-circle-inner:hover .fabi-avatar-zoom {
+            transform: scale(1.66);
+        }
+
+        /* Tarjeta desplegable hacia abajo al hacer clic en el avatar de FABI */
+        .fabi-avatar-popover {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            width: 235px;
+            border-radius: 22px;
+            padding: 7px;
+            background: rgba(255, 248, 252, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 2px solid rgba(255, 255, 255, 0.92);
+            box-shadow: 0 22px 44px -8px rgba(115, 42, 72, 0.42),
+                        0 0 0 1px rgba(216, 122, 158, 0.32);
+            transform-origin: 28px top;
+            transform: translateY(-10px) scaleY(0.25) scaleX(0.35);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.32s ease,
+                        visibility 0.32s ease;
+            z-index: 100;
+        }
+
+        .fabi-avatar-popover.is-open {
+            transform: translateY(0) scaleY(1) scaleX(1);
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* 2. Efecto Alternativo en el Render Principal: PREMIUM SOFT GLOW */
+        .fabi-render-stage {
+            position: relative;
+        }
+
+        .fabi-glow-wrap {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            --glow-x: 50%;
+            --glow-y: 50%;
+            --glow-opacity: 0;
+        }
+
+        /* Halo difuso que acompaña sutilmente al cursor detrás del render */
+        .fabi-soft-aura {
+            position: absolute;
+            inset: -18px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: var(--glow-opacity, 0);
+            transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            background: radial-gradient(
+                180px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+                rgba(255, 245, 250, 0.72) 0%,
+                rgba(255, 196, 220, 0.42) 42%,
+                rgba(216, 122, 158, 0) 76%
+            );
+            filter: blur(12px);
+            border-radius: 9999px;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .fabi-glow-wrap:hover .fabi-render {
+                transform: translateY(-4px) scale(1.03);
+                filter:
+                    drop-shadow(0 0 14px rgba(255, 240, 247, 0.68))
+                    drop-shadow(-8px 14px 24px rgba(115, 45, 72, 0.36));
+            }
+        }
+
+        /* Tooltip discreto para el icono Married en el perfil de Jhon */
+        .married-badge-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .married-tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: rgba(74, 44, 56, 0.92);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 4px 12px rgba(74, 44, 56, 0.28);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+            z-index: 60;
+        }
+
+        .married-badge-wrap.is-tooltip-visible .married-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Estilos para Estados de Conexión API (Verde Online, Naranja Ausente, Gris Desconocido) */
+        @keyframes pulse-away {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 159, 67, 0.7);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 5px rgba(255, 159, 67, 0);
+            }
+        }
+
+        .status-dot-online {
+            background-color: #2ed573;
+            animation: pulse-online 2.2s infinite;
+        }
+
+        .status-dot-away {
+            background-color: #ff9f43;
+            animation: pulse-away 2.4s infinite;
+        }
+
+        .status-dot-offline {
+            background-color: #a4b0be;
+            animation: none;
+        }
+
+        /* Reproductor Musical Glassmorphism con Slider Circular 3D */
+        .music-glass-card {
+            background: rgba(244, 218, 232, 0.52);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 8px 22px -6px rgba(145, 70, 100, 0.18),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.85);
+        }
+
+        .carousel-3d-stage {
+            perspective: 750px;
+            position: relative;
+            width: 118px;
+            height: 118px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        .cover-3d-item {
+            position: absolute;
+            width: 92px;
+            height: 92px;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.55s ease,
+                        filter 0.55s ease;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            will-change: transform, opacity;
+        }
+
+        .cover-3d-item.pos-center {
+            transform: translate3d(0, 0, 26px) scale(1);
+            opacity: 1;
+            z-index: 30;
+            box-shadow: 0 10px 22px -4px rgba(138, 62, 92, 0.38);
+            filter: brightness(1);
+        }
+
+        .cover-3d-item.pos-left {
+            transform: translate3d(-24px, 0, -22px) rotateY(28deg) scale(0.82);
+            opacity: 0.68;
+            z-index: 20;
+            box-shadow: 0 6px 14px -4px rgba(138, 62, 92, 0.22);
+            filter: brightness(0.92);
+        }
+
+        .cover-3d-item.pos-right {
+            transform: translate3d(24px, 0, -22px) rotateY(-28deg) scale(0.82);
+            opacity: 0.68;
+            z-index: 20;
+            box-shadow: 0 6px 14px -4px rgba(138, 62, 92, 0.22);
+            filter: brightness(0.92);
+        }
+
+        .cover-3d-item.pos-hidden {
+            transform: translate3d(0, 0, -55px) scale(0.6);
+            opacity: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Sliders personalizados del reproductor */
+        .pastel-range {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.85);
+            height: 4px;
+            border-radius: 999px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .pastel-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #d87a9e;
+            box-shadow: 0 1px 4px rgba(138, 62, 92, 0.35);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .pastel-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* ==========================================
+           NUEVOS ESTILOS: RENDER DE TEXTO + SHINE2.PNG + INTRO SCREEN + PISCIS ICON
+           ========================================== */
+        .fabi-text-render-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 6px 16px rgba(138, 62, 92, 0.28));
+        }
+
+        .fabi-text-render-wrap:hover {
+            transform: translateY(-3px) scale(1.025);
+            filter:
+                drop-shadow(0 0 14px rgba(255, 240, 247, 0.78))
+                drop-shadow(0 10px 22px rgba(138, 62, 92, 0.38));
+        }
+
+        /* Imagen principal text.png conservando proporción y nitidez */
+        .fabi-text-render-img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Efecto Inner Shine que recorre internamente el render de texto */
+        .fabi-text-inner-shine {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            overflow: hidden;
+            -webkit-mask-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/text.png');
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/text.png');
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+
+        .fabi-text-inner-shine::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -130%;
+            width: 65%;
+            height: 140%;
+            background: linear-gradient(
+                110deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 245, 250, 0.35) 38%,
+                rgba(255, 255, 255, 0.85) 50%,
+                rgba(255, 230, 242, 0.35) 62%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-24deg);
+            animation: textInnerSweep 5.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        }
+
+        .fabi-text-render-wrap:hover .fabi-text-inner-shine::after {
+            animation-duration: 2.6s;
+        }
+
+        @keyframes textInnerSweep {
+            0%, 18% { left: -130%; }
+            58%, 100% { left: 165%; }
+        }
+
+        /* Destellos realistas usando shine2.png en diferentes posiciones, escalas y tiempos */
+        .shine-sparkles-layer {
+            position: absolute;
+            inset: -10px;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .real-sparkle {
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            background-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/shine2.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            mix-blend-mode: screen;
+            opacity: 0;
+            will-change: transform, opacity;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+        }
+
+        .real-sparkle.sp-1 {
+            top: 8%;
+            left: 14%;
+            width: 34px;
+            height: 34px;
+            animation: sparkleTwinkle1 3.8s ease-in-out infinite 0.2s;
+        }
+
+        .real-sparkle.sp-2 {
+            top: 16%;
+            right: 18%;
+            width: 42px;
+            height: 42px;
+            animation: sparkleTwinkle2 4.6s ease-in-out infinite 1.3s;
+        }
+
+        .real-sparkle.sp-3 {
+            bottom: 14%;
+            left: 36%;
+            width: 28px;
+            height: 28px;
+            animation: sparkleDrift 5.2s ease-in-out infinite 0.8s;
+        }
+
+        .real-sparkle.sp-4 {
+            top: 42%;
+            left: 62%;
+            width: 32px;
+            height: 32px;
+            animation: sparkleTwinkle1 4.1s ease-in-out infinite 2.4s;
+        }
+
+        .real-sparkle.sp-5 {
+            bottom: 20%;
+            right: 10%;
+            width: 26px;
+            height: 26px;
+            animation: sparkleTwinkle2 3.5s ease-in-out infinite 1.9s;
+        }
+
+        @keyframes sparkleTwinkle1 {
+            0%, 100% { opacity: 0; transform: scale(0.35) rotate(0deg); }
+            45% { opacity: 0.95; transform: scale(1.08) rotate(22deg); }
+            65% { opacity: 0.4; transform: scale(0.75) rotate(40deg); }
+        }
+
+        @keyframes sparkleTwinkle2 {
+            0%, 100% { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+            50% { opacity: 0.9; transform: scale(1.14) rotate(18deg); }
+        }
+
+        @keyframes sparkleDrift {
+            0%, 100% { opacity: 0; transform: translate3d(-10px, 4px, 0) scale(0.4) rotate(0deg); }
+            50% { opacity: 0.88; transform: translate3d(14px, -4px, 0) scale(1.05) rotate(35deg); }
+        }
+
+        /* Pantalla de Bienvenida (Intro Screen) con desenfoque de la página principal */
+        .intro-screen-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(
+                135deg,
+                rgba(232, 156, 186, 0.56) 0%,
+                rgba(248, 210, 226, 0.48) 50%,
+                rgba(216, 122, 158, 0.60) 100%
+            );
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        visibility 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .intro-screen-overlay.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(1.04);
+        }
+
+        /* Botón Flotante INGRESAR con Glassmorphism e Inner Shine */
+        .intro-enter-btn {
+            position: relative;
+            overflow: hidden;
+            padding: 13px 44px;
+            border-radius: 9999px;
+            background: rgba(255, 245, 250, 0.34);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(255, 255, 255, 0.82);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            text-shadow: 0 1px 4px rgba(138, 62, 92, 0.45);
+            box-shadow: 0 12px 28px -6px rgba(138, 62, 92, 0.32),
+                        inset 0 0 14px rgba(255, 255, 255, 0.48);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.35s ease,
+                        background 0.35s ease;
+            cursor: pointer;
+        }
+
+        .intro-enter-btn:hover {
+            transform: translateY(-3px) scale(1.04);
+            background: rgba(255, 245, 250, 0.48);
+            box-shadow: 0 16px 34px -6px rgba(138, 62, 92, 0.45),
+                        0 0 18px rgba(255, 235, 245, 0.7),
+                        inset 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .intro-enter-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .intro-enter-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -130%;
+            width: 75%;
+            height: 100%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.68) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+
+        .intro-enter-btn:hover::after {
+            left: 145%;
+        }
+
+        /* Destellos luminosos aleatorios en la interfaz utilizando el recurso original shine2.png */
+        .ui-ambient-sparkle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 35;
+            background-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/shine2.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+            transform: scale(0) rotate(0deg);
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: ambientSparklePop var(--sp-dur, 2.4s) ease-in-out forwards;
+        }
+
+        @keyframes ambientSparklePop {
+            0% {
+                opacity: 0;
+                transform: scale(0.25) rotate(0deg);
+            }
+            48% {
+                opacity: var(--sp-op, 0.9);
+                transform: scale(1.08) rotate(22deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3) rotate(45deg);
+            }
+        }
+
+        /* Partículas del SVG Heart al hacer clic (explosión suave y autolimpieza) */
+        .floating-married-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9990;
+            will-change: transform, opacity;
+            user-select: none;
+            -webkit-user-select: none;
+            filter: drop-shadow(0 2px 5px rgba(138, 62, 92, 0.35));
+            animation: floatMarriedHeart var(--heart-dur, 1150ms) cubic-bezier(0.2, 0.85, 0.32, 1) forwards;
+        }
+
+        @keyframes floatMarriedHeart {
+            0% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(0.45) rotate(0deg);
+            }
+            30% {
+                opacity: var(--heart-op, 0.95);
+                transform: translate3d(calc(var(--tx, 0px) * 0.45), calc(var(--ty, -50px) * 0.45), 0) scale(var(--heart-scale, 1)) rotate(calc(var(--rot, 10deg) * 0.5));
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--tx, 0px), var(--ty, -75px), 0) scale(calc(var(--heart-scale, 1) * 0.72)) rotate(var(--rot, 15deg));
+            }
+        }
+
+        /* Lista de canciones compacta integrada en el reproductor */
+        .playlist-mini-list {
+            max-height: 112px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .playlist-mini-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .playlist-track-row {
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .playlist-track-row.active-track {
+            background: rgba(216, 122, 158, 0.28);
+            border-color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Gradientes animados progresivos hacia arriba-izquierda (dirección de la flecha: ~302deg) que aparecen y desaparecen suavemente */
+        @keyframes nameDiagonalWave {
+            0% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        .fabi-gradient-name {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #ffffff 0%,
+                #ffffff 28%,
+                #ffb8d2 42%,
+                #ff5c99 50%,
+                #ffd1e3 58%,
+                #ffffff 72%,
+                #ffffff 100%
+            );
+            background-size: 280% 280%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 3.2s linear infinite;
+            filter: drop-shadow(0 1px 3px rgba(138, 52, 84, 0.48));
+        }
+
+        .jhon-gradient-name {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #fff3f5 0%,
+                #fff3f5 28%,
+                #ff758f 42%,
+                #d91842 50%,
+                #ff8fa3 58%,
+                #fff3f5 72%,
+                #fff3f5 100%
+            );
+            background-size: 280% 280%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 3.2s linear infinite;
+            filter: drop-shadow(0 1px 3px rgba(120, 28, 52, 0.52));
+        }
+
+        /* Rastro de destellos (sparkles) ligeros al mover el cursor */
+        .cursor-sparkle-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            border-radius: 50%;
+            will-change: transform, opacity;
+            animation: cursorSparkleFade var(--cs-dur, 620ms) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .cursor-sparkle-particle::before,
+        .cursor-sparkle-particle::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            border-radius: 999px;
+        }
+
+        .cursor-sparkle-particle::before {
+            transform: scaleX(0.28) scaleY(1.45);
+        }
+
+        .cursor-sparkle-particle::after {
+            transform: scaleX(1.45) scaleY(0.28);
+        }
+
+        @keyframes cursorSparkleFade {
+            0% {
+                opacity: 0.95;
+                transform: translate3d(0, 0, 0) scale(0.45) rotate(0deg);
+            }
+            40% {
+                opacity: 1;
+                transform: translate3d(calc(var(--cs-dx, 0px) * 0.45), calc(var(--cs-dy, 10px) * 0.45), 0) scale(1.05) rotate(45deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--cs-dx, 0px), var(--cs-dy, 18px), 0) scale(0.1) rotate(90deg);
+            }
+        }
+
+        /* Scrollbar delicado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d87a9e;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body style="padding-top: 65px;" class="flex items-start justify-center pt-[65px] pb-8 px-4 sm:px-6 md:pb-12 lg:pb-14">
+
+    <!-- ==========================================
+         NUEVA PÁGINA DE INICIO – INTRO SCREEN
+         ========================================== -->
+    <div id="intro-screen" class="intro-screen-overlay" role="dialog" aria-modal="true" aria-label="Pantalla de bienvenida FABI">
+        <div class="flex flex-col items-center justify-center max-w-[540px] w-full text-center gap-7">
+            <!-- Render de texto central con Inner Shine y destellos realistas shine2.png -->
+            <div class="fabi-text-render-wrap px-2">
+                <img 
+                    src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/text.png" 
+                    alt="FABI Intro Text Render" 
+                    class="fabi-text-render-img w-[280px] sm:w-[370px] md:w-[430px] mx-auto select-none"
+                >
+                <div class="fabi-text-inner-shine" aria-hidden="true"></div>
+                <div class="shine-sparkles-layer" aria-hidden="true">
+                    <span class="real-sparkle sp-1"></span>
+                    <span class="real-sparkle sp-2"></span>
+                    <span class="real-sparkle sp-3"></span>
+                    <span class="real-sparkle sp-4"></span>
+                    <span class="real-sparkle sp-5"></span>
+                </div>
+            </div>
+
+            <!-- Botón Flotante INGRESAR -->
+            <button 
+                id="intro-enter-btn" 
+                type="button" 
+                onclick="enterMainSite()" 
+                class="intro-enter-btn"
+            >
+                INGRESAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Fondo General detrás de toda la interfaz -->
+    <div class="site-bg" aria-hidden="true"></div>
+    <div class="site-bg-overlay" aria-hidden="true"></div>
+
+    <!-- Contenedor Principal (Misma proporción y ancho que el diseño original) -->
+    <main class="w-full max-w-[850px] mx-auto relative z-10">
+
+        <!-- ==========================================
+             1. SECCIÓN SUPERIOR: PERFILES FABI Y JHON + API REAL
+             ========================================== -->
+        <header class="flex flex-wrap items-center justify-start gap-6 sm:gap-10 px-2 sm:px-4 mb-5 md:mb-6 relative z-40">
+            <!-- Círculo Decorativo Superior de Perfil FABI + Estado API + Ampliación al hacer clic -->
+            <div class="flex items-center gap-3.5 relative">
+                <div 
+                    id="fabi-avatar-trigger"
+                    onclick="toggleFabiAvatarExpand(event)"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="false"
+                    aria-label="Ampliar fotografía de FABI"
+                    title="Haz clic para ampliar"
+                    class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-white/80 backdrop-blur-md border border-white/85 shadow-md flex-shrink-0 cursor-pointer"
+                >
+                    <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-pastel-200">
+                        <img 
+                            src="https://xatimg.com/image/ZBI9bMWy0p6h.png" 
+                            alt="FABI Avatar" 
+                            class="fabi-avatar-zoom w-full h-full object-cover"
+                        >
+                    </div>
+                    <!-- Círculo indicador de estado de conexión FABI -->
+                    <span 
+                        id="fabi-status-dot"
+                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-white z-10" 
+                        title="Verificando estado..."
+                        aria-label="Estado de FABI"
+                    ></span>
+                </div>
+
+                <!-- Imagen de FABI ampliada hacia abajo al hacer clic (Conserva proporciones originales) -->
+                <div id="fabi-avatar-popover" class="fabi-avatar-popover" onclick="toggleFabiAvatarExpand(event)">
+                    <div class="relative rounded-[16px] overflow-hidden bg-pastel-100">
+                        <img 
+                            src="https://xatimg.com/image/ZBI9bMWy0p6h.png" 
+                            alt="FABI Fotografía Completa" 
+                            class="w-full h-auto block object-contain rounded-[16px] cursor-pointer"
+                        >
+                        <button 
+                            type="button"
+                            onclick="closeFabiAvatarExpand(event)"
+                            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center backdrop-blur-sm transition"
+                            title="Cerrar vista ampliada"
+                            aria-label="Cerrar vista ampliada"
+                        >
+                            <i class="ph-bold ph-x text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="leading-tight">
+                    <div class="flex items-center gap-1.5">
+                        <h2 class="font-bold text-lg sm:text-xl tracking-wide flex items-center gap-2.5">
+                            <span class="fabi-gradient-name">FABI</span>
+                            <img 
+                                src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/flasgco.webp" 
+                                alt="Colombia" 
+                                class="w-9 sm:w-11 h-auto object-contain inline-block select-none drop-shadow-[0_2px_4px_rgba(140,63,93,0.4)]"
+                            >
+                        </h2>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span id="fabi-status-text" class="text-white/95 text-xs sm:text-sm font-normal tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
+                            Conectando...
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Círculo de Perfil — JHON (Mismo tamaño exacto, alineado junto a FABI, Icono Saturno -> xat.me/jhon y API Real) -->
+            <div class="flex items-center gap-3.5">
+                <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-white/80 backdrop-blur-md border border-white/85 shadow-md flex-shrink-0">
+                    <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-pastel-200">
+                        <img 
+                            src="https://xatimg.com/image/MjeWd1SYnYh9.png" 
+                            alt="Jhon Avatar" 
+                            class="w-full h-full object-cover object-center"
+                        >
+                    </div>
+                    <!-- Icono SVG Heart (married) en la esquina inferior izquierda señalada en la referencia -->
+                    <div 
+                        id="jhon-married-badge"
+                        class="married-badge-wrap absolute bottom-0 left-0 z-20 cursor-pointer outline-none"
+                        role="button"
+                        aria-label="married"
+                        onmouseenter="showMarriedTooltip()"
+                        onmouseleave="hideMarriedTooltip()"
+                        onclick="handleMarriedHeartClick(event)"
+                    >
+                        <img 
+                            src="https://beta.xat.com/assets/DYp8AWP5.svg" 
+                            alt="married" 
+                            class="w-4 h-4 sm:w-[18px] sm:h-[18px] object-contain block drop-shadow-[0_1px_2px_rgba(74,44,56,0.5)] pointer-events-none"
+                        >
+                        <span class="married-tooltip" role="tooltip">married</span>
+                    </div>
+                    <!-- Círculo indicador de estado de conexión JHON -->
+                    <span 
+                        id="jhon-status-dot"
+                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-white z-10" 
+                        title="Verificando estado..."
+                        aria-label="Estado de Jhon"
+                    ></span>
+                </div>
+
+                <div class="leading-tight">
+                    <div class="flex items-center gap-1.5">
+                        <h2 class="jhon-gradient-name font-bold text-lg sm:text-xl tracking-wide">
+                            Jhon
+                        </h2>
+                        <!-- Icono interactivo de Saturno exclusivo de JHON redirigiendo a https://xat.me/jhon -->
+                        <a 
+                            href="https://xat.me/jhon" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="w-6 h-6 rounded-full bg-white/30 hover:bg-white/55 border border-white/60 flex items-center justify-center text-white transition transform hover:scale-110 shadow-sm backdrop-blur-sm"
+                            title="Ir a xat.me/jhon"
+                            aria-label="Ir a xat.me/jhon"
+                        >
+                            <i class="ph-fill ph-planet text-sm"></i>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span id="jhon-status-text" class="text-white/95 text-xs sm:text-sm font-normal tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
+                            Conectando...
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==========================================
+             2. BANNER HERO PRINCIPAL + RENDER FABI
+             ========================================== -->
+        <section id="hero-section" class="relative mt-4 sm:mt-8 mb-7 sm:mb-9">
+            <!-- Tarjeta Translúcida Principal -->
+            <div class="glass-pink-solid rounded-[34px] sm:rounded-[40px] px-7 py-8 sm:px-12 sm:py-11 md:py-12 relative overflow-visible min-h-[260px] sm:min-h-[295px] flex flex-col justify-center">
+                
+                <!-- Columna Izquierda: Render de Texto Protagonista (text.png) + Inner Shine + Destellos shine2.png -->
+                <div class="w-full md:w-[60%] lg:w-[62%] z-10 pr-2 sm:pr-6 flex flex-col items-start justify-center">
+                    <div class="fabi-text-render-wrap mb-4">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/text.png" 
+                            alt="FABI" 
+                            class="fabi-text-render-img w-[240px] sm:w-[320px] md:w-[370px] select-none"
+                        >
+                        <div class="fabi-text-inner-shine" aria-hidden="true"></div>
+                        <div class="shine-sparkles-layer" aria-hidden="true">
+                            <span class="real-sparkle sp-1"></span>
+                            <span class="real-sparkle sp-2"></span>
+                            <span class="real-sparkle sp-3"></span>
+                            <span class="real-sparkle sp-4"></span>
+                            <span class="real-sparkle sp-5"></span>
+                        </div>
+                    </div>
+
+                    <!-- Texto pequeño de identificación debajo del render de texto -->
+                    <div class="pt-0.5 pl-1">
+                        <span class="text-white/95 text-xs sm:text-[13px] font-semibold tracking-[0.14em] drop-shadow-[0_1px_3px_rgba(138,62,92,0.45)] select-none">
+                            Faby (46197719)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Render Principal de FABI con Efecto Premium Soft Glow -->
+                <div class="fabi-render-stage mt-6 md:mt-0 md:absolute md:right-3 lg:right-6 md:bottom-0 z-20 flex justify-center md:block">
+                    <div id="fabi-glow-card" class="fabi-glow-wrap">
+                        <div class="fabi-soft-aura" aria-hidden="true"></div>
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/render1.png" 
+                            alt="FABI Main Render" 
+                            class="fabi-render w-[230px] sm:w-[270px] md:w-[305px] lg:w-[325px] max-h-[360px] object-contain object-bottom select-none block"
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             3. GRID INFERIOR: 2 COLUMNAS PRINCIPALES
+             ========================================== -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+
+            <!-- ==========================================
+                 COLUMNA IZQUIERDA (7 de 12 cols):
+                 - REPRODUCTOR MUSICAL INDEPENDIENTE (SIN ABOUT ME)
+                 - RECUADRO SIGNO ZODIACAL PISCIS + RELOJ FUNCIONAL
+                 ========================================== -->
+            <div class="md:col-span-7 flex flex-col justify-between gap-4 sm:gap-5">
+
+                <!-- 4. REPRODUCTOR MUSICAL GLASSMORPHISM INDEPENDIENTE CON PORTADAS JPG Y PLAYLIST AMPLIADA -->
+                <div id="music-player-card" class="glass-white-bordered music-glass-card rounded-[26px] sm:rounded-[30px] p-4 sm:p-5 flex flex-col gap-3.5 flex-1 relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row items-center gap-5 w-full">
+                        <!-- Slider Circular 3D de Covers JPG individuales (Generado dinámicamente con todas las pistas) -->
+                        <div class="carousel-3d-stage flex-shrink-0" id="cover-carousel-3d" aria-label="Selector 3D de canciones">
+                        </div>
+
+                        <!-- Panel Derecho de Información y Controles -->
+                        <div class="flex-1 w-full flex flex-col justify-center">
+                            <div class="flex items-start justify-between gap-2 mb-1.5">
+                                <div>
+                                    <h3 id="player-title" class="text-[#2f1a23] font-bold text-base sm:text-[17px] leading-tight">
+                                        Engel
+                                    </h3>
+                                    <p id="player-artist" class="text-[#6e4658] text-xs sm:text-[13px] font-medium leading-tight mt-0.5 uppercase tracking-wider">
+                                        RAMMSTEIN
+                                    </p>
+                                </div>
+                                <button id="player-like-btn" onclick="togglePlayerLike()" class="text-pastel-500 hover:text-pastel-600 transition transform active:scale-125 drop-shadow-sm" title="Favorito">
+                                    <i class="ph-fill ph-heart text-lg sm:text-xl text-pastel-500"></i>
+                                </button>
+                            </div>
+
+                            <!-- Barra de Progreso + Tiempos -->
+                            <div class="w-full mt-1.5">
+                                <input 
+                                    id="player-progress" 
+                                    type="range" 
+                                    min="0" 
+                                    max="100" 
+                                    value="0" 
+                                    class="pastel-range w-full"
+                                    aria-label="Progreso de canción"
+                                >
+                                <div class="flex items-center justify-between text-[10px] sm:text-[11px] font-semibold text-[#6e4658] mt-1">
+                                    <span id="player-current-time">0:00</span>
+                                    <span id="player-duration">0:30</span>
+                                </div>
+                            </div>
+
+                            <!-- Controles Reproducción, Pausa y Navegación Circular 3D -->
+                            <div class="flex items-center justify-center gap-6 my-1.5 text-pastel-600 drop-shadow-sm">
+                                <button onclick="prevTrack3D()" class="hover:text-pastel-700 transition transform hover:scale-110" title="Anterior">
+                                    <i class="ph-fill ph-rewind text-xl"></i>
+                                </button>
+                                <button id="player-play-btn" onclick="togglePlayMusic()" class="w-9 h-9 rounded-full bg-pastel-500 text-white hover:bg-pastel-600 flex items-center justify-center shadow-sm transition transform hover:scale-105" title="Reproducir / Pausar">
+                                    <i id="player-play-icon" class="ph-fill ph-play text-base"></i>
+                                </button>
+                                <button onclick="nextTrack3D()" class="hover:text-pastel-700 transition transform hover:scale-110" title="Siguiente">
+                                    <i class="ph-fill ph-fast-forward text-xl"></i>
+                                </button>
+                            </div>
+
+                            <!-- Control de Volumen Inferior -->
+                            <div class="flex items-center gap-2 mt-1">
+                                <i class="ph-fill ph-speaker-low text-xs text-pastel-600 drop-shadow-sm"></i>
+                                <input 
+                                    id="player-volume" 
+                                    type="range" 
+                                    min="0" 
+                                    max="1" 
+                                    step="0.02" 
+                                    value="0.75" 
+                                    class="pastel-range flex-1"
+                                    aria-label="Volumen"
+                                >
+                                <i class="ph-fill ph-speaker-high text-xs text-pastel-600 drop-shadow-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Canciones Interactiva (Canciones de la referencia + existentes) -->
+                    <div id="playlist-tracks-container" class="playlist-mini-list border-t border-pastel-300/60 pt-2.5 flex flex-col gap-1.5 pr-1">
+                    </div>
+                </div>
+
+                <!-- FILA INFERIOR IZQUIERDA: TARJETA SIGNO ZODIACAL (PISCIS) + RELOJ FUNCIONAL -->
+                <div class="grid grid-cols-12 gap-4 sm:gap-5 items-stretch">
+                    
+                    <!-- 5. INFORMACIÓN PERSONAL – SIGNO ZODIACAL PISCIS -->
+                    <div id="pisces-info-card" class="col-span-7 glass-pink-solid rounded-[26px] sm:rounded-[28px] p-5 sm:p-6 text-white flex flex-col justify-between min-h-[185px] sm:min-h-[195px] relative overflow-hidden">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <div class="text-2xl sm:text-[32px] font-bold leading-none tracking-tight">
+                                    Piscis
+                                </div>
+                                <div class="text-xs sm:text-sm font-medium text-white/95 mt-1.5 tracking-wide">
+                                    Signo Zodiacal ♓
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-end justify-between mt-4">
+                            <!-- Icono Zodiacal de Piscis (icon2.png) sin efecto Shine ni animaciones -->
+                            <div title="Piscis">
+                                <img 
+                                    src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/icon2.png" 
+                                    alt="Piscis Icono Zodiacal" 
+                                    class="w-11 h-11 sm:w-12 sm:h-12 object-contain block select-none"
+                                >
+                            </div>
+
+                            <!-- Tres puntos inferiores originales -->
+                            <div class="flex items-center gap-2 pb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. RELOJ Y CALENDARIO FUNCIONAL EN ESPAÑOL CON GLASSMORPHISM -->
+                    <div id="clock-info-card" class="col-span-5 clock-glass-card rounded-[26px] sm:rounded-[28px] p-4 sm:p-5 flex flex-col justify-center min-h-[185px] sm:min-h-[195px] relative overflow-hidden">
+                        <!-- Hora, Minutos, Segundos y a. m. / p. m. en tiempo real -->
+                        <div class="flex items-baseline flex-wrap gap-x-2 text-pastel-600 drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
+                            <span id="clock-hm" class="text-3xl sm:text-[38px] font-extrabold tracking-tight leading-none">
+                                08:30
+                            </span>
+                            <div class="flex flex-col leading-tight">
+                                <span id="clock-sec" class="text-xs sm:text-[13px] font-bold text-pastel-700">
+                                    00s
+                                </span>
+                                <span id="clock-ampm" class="text-xs sm:text-[13px] font-extrabold uppercase">
+                                    p. m.
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Día de la semana y Fecha + Mes + Año en español (es-MX) -->
+                        <div class="mt-3 text-[#2f1a23] drop-shadow-[0_1px_1px_rgba(255,255,255,0.65)]">
+                            <div id="clock-weekday" class="text-sm sm:text-[15px] font-semibold leading-tight">
+                                Sábado
+                            </div>
+                            <div id="clock-month-year" class="text-[15px] sm:text-[17px] font-extrabold leading-tight mt-0.5">
+                                14 de Noviembre 2026
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+                 COLUMNA DERECHA (5 de 12 cols):
+                 - 4 RECUADROS CON LOS GIFS PROPORCIONADOS (COMPACTOS Y SIN TEXTOS)
+                 ========================================== -->
+            <div id="gallery-section" class="md:col-span-5 flex flex-col justify-start">
+
+                <!-- Grid Compacto de los 4 Recuadros con GIF (Separación vertical reducida entre fila superior e inferior) -->
+                <div class="grid grid-cols-2 gap-x-2.5 gap-y-2 sm:gap-x-3 sm:gap-y-2.5 content-start">
+
+                    <!-- GIF 1 -->
+                    <div class="gif-card rounded-[22px] sm:rounded-[24px] overflow-hidden relative h-[175px] sm:h-[185px] flex items-center justify-center group">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/5e2fe6ef895e3120a42ea4ad2e3acfac7bc70ca0/gif%20(2).gif" 
+                            alt="FABI GIF 1" 
+                            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        >
+                    </div>
+
+                    <!-- GIF 2 -->
+                    <div class="gif-card rounded-[22px] sm:rounded-[24px] overflow-hidden relative h-[175px] sm:h-[185px] flex items-center justify-center group">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/5e2fe6ef895e3120a42ea4ad2e3acfac7bc70ca0/gif%20(3).gif" 
+                            alt="FABI GIF 2" 
+                            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        >
+                    </div>
+
+                    <!-- GIF 3 -->
+                    <div class="gif-card rounded-[22px] sm:rounded-[24px] overflow-hidden relative h-[140px] sm:h-[148px] flex items-center justify-center group">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/5e2fe6ef895e3120a42ea4ad2e3acfac7bc70ca0/gif%20(4).gif" 
+                            alt="FABI GIF 3" 
+                            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        >
+                    </div>
+
+                    <!-- GIF 4 -->
+                    <div class="gif-card rounded-[22px] sm:rounded-[24px] overflow-hidden relative h-[140px] sm:h-[148px] flex items-center justify-center group">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/Fabigifs/5e2fe6ef895e3120a42ea4ad2e3acfac7bc70ca0/gif%20(5).gif" 
+                            alt="FABI GIF 4" 
+                            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+             5. FIRMA EN EL FOOTER
+             ========================================== -->
+        <footer class="mt-8 sm:mt-10 text-center select-none">
+            <p class="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#FFFFFF] drop-shadow-[0_1px_3px_rgba(140,63,93,0.55)]">
+                XATFRAME DESIGN © EAM96
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- ==========================================
+         LÓGICA JAVASCRIPT: RELOJ, API ONLINE REAL Y REPRODUCTOR 3D
+         ========================================== -->
+    <script>
+        // 0. Interacción del SVG Heart (married) con explosión suave de corazones y tooltip controlado sin bloquearse
+        const MARRIED_HEART_SVG_URL = 'https://beta.xat.com/assets/DYp8AWP5.svg';
+        let activeHeartParticles = 0;
+        const MAX_ACTIVE_HEARTS = 24;
+        let marriedTooltipTouchTimer = null;
+
+        function showMarriedTooltip() {
+            const badge = document.getElementById('jhon-married-badge');
+            if (!badge) return;
+            if (marriedTooltipTouchTimer) {
+                clearTimeout(marriedTooltipTouchTimer);
+                marriedTooltipTouchTimer = null;
+            }
+            badge.classList.add('is-tooltip-visible');
+        }
+
+        function hideMarriedTooltip() {
+            const badge = document.getElementById('jhon-married-badge');
+            if (!badge) return;
+            if (marriedTooltipTouchTimer) {
+                clearTimeout(marriedTooltipTouchTimer);
+                marriedTooltipTouchTimer = null;
+            }
+            badge.classList.remove('is-tooltip-visible');
+        }
+
+        function handleMarriedHeartClick(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const badge = document.getElementById('jhon-married-badge');
+            if (!badge) return;
+
+            spawnMarriedHeartsBurst(badge);
+
+            // En dispositivos táctiles muestra el tooltip temporalmente y lo oculta automáticamente
+            const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+            if (isTouch) {
+                showMarriedTooltip();
+                marriedTooltipTouchTimer = setTimeout(() => {
+                    hideMarriedTooltip();
+                }, 2000);
+            }
+        }
+
+        function spawnMarriedHeartsBurst(originEl) {
+            if (!originEl || activeHeartParticles >= MAX_ACTIVE_HEARTS) return;
+
+            const rect = originEl.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+            const count = 7;
+
+            for (let i = 0; i < count; i++) {
+                if (activeHeartParticles >= MAX_ACTIVE_HEARTS) break;
+                activeHeartParticles++;
+
+                const heart = document.createElement('img');
+                heart.src = MARRIED_HEART_SVG_URL;
+                heart.alt = '';
+                heart.setAttribute('aria-hidden', 'true');
+                heart.className = 'floating-married-heart';
+
+                const size = 12 + Math.floor(Math.random() * 8); // 12px a 19px
+                const spreadX = (Math.random() - 0.5) * 68;     // dispersión horizontal suave
+                const riseY = -(38 + Math.random() * 52);       // elevación vertical
+                const rot = (Math.random() - 0.5) * 46;         // rotación ligera
+                const scale = (0.78 + Math.random() * 0.42).toFixed(2);
+                const duration = Math.round(900 + Math.random() * 450);
+                const delay = Math.round(i * 38);
+
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.left = `${startX - size / 2}px`;
+                heart.style.top = `${startY - size / 2}px`;
+                heart.style.setProperty('--tx', `${spreadX.toFixed(1)}px`);
+                heart.style.setProperty('--ty', `${riseY.toFixed(1)}px`);
+                heart.style.setProperty('--rot', `${rot.toFixed(1)}deg`);
+                heart.style.setProperty('--heart-scale', scale);
+                heart.style.setProperty('--heart-dur', `${duration}ms`);
+                heart.style.animationDelay = `${delay}ms`;
+
+                document.body.appendChild(heart);
+
+                const cleanup = () => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                    activeHeartParticles = Math.max(0, activeHeartParticles - 1);
+                };
+
+                heart.addEventListener('animationend', cleanup, { once: true });
+                setTimeout(cleanup, duration + delay + 120);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const badge = document.getElementById('jhon-married-badge');
+            if (badge && !badge.contains(e.target)) {
+                hideMarriedTooltip();
+            }
+        });
+
+        // 1. Reloj y Calendario Funcional en Tiempo Real en Español (es-MX)
+        function capitalizeSpanishWord(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'p. m.' : 'a. m.';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            const paddedMinutes = String(minutes).padStart(2, '0');
+            const paddedSeconds = String(seconds).padStart(2, '0');
+
+            const hmElement = document.getElementById('clock-hm');
+            const secElement = document.getElementById('clock-sec');
+            const ampmElement = document.getElementById('clock-ampm');
+
+            if (hmElement) hmElement.textContent = `${hours}:${paddedMinutes}`;
+            if (secElement) secElement.textContent = `${paddedSeconds}s`;
+            if (ampmElement) ampmElement.textContent = ampm;
+
+            // Formateo explícito con localización es-MX
+            const rawWeekday = new Intl.DateTimeFormat('es-MX', { weekday: 'long' }).format(now);
+            const rawMonth = new Intl.DateTimeFormat('es-MX', { month: 'long' }).format(now);
+            const dayNum = now.getDate();
+            const year = now.getFullYear();
+
+            const weekdayName = capitalizeSpanishWord(rawWeekday.replace(/[.,]/g, ''));
+            const monthName = capitalizeSpanishWord(rawMonth.replace(/[.,]/g, ''));
+
+            const weekdayEl = document.getElementById('clock-weekday');
+            const monthYearEl = document.getElementById('clock-month-year');
+
+            if (weekdayEl) weekdayEl.textContent = weekdayName;
+            if (monthYearEl) monthYearEl.textContent = `${dayNum} de ${monthName} ${year}`;
+        }
+
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
+        // 2. Sistema de Estado Online con API Real independiente para FABI y JHON
+        const STATUS_ENDPOINTS = {
+            fabi: {
+                url: 'https://illuxat.com/api/online/Faby',
+                dotId: 'fabi-status-dot',
+                textId: 'fabi-status-text'
+            },
+            jhon: {
+                url: 'https://illuxat.com/api/online/Jhon',
+                dotId: 'jhon-status-dot',
+                textId: 'jhon-status-text'
+            }
+        };
+
+        function extractApiStatusString(payload) {
+            if (!payload) return '';
+            if (typeof payload === 'string') return payload.trim();
+            if (typeof payload === 'object') {
+                // Busca el campo de estado en posibles estructuras JSON devueltas por la API
+                const candidates = [
+                    payload.status,
+                    payload.state,
+                    payload.online,
+                    payload.result,
+                    payload.message,
+                    payload.data && payload.data.status,
+                    payload.data && payload.data.state,
+                    payload.data
+                ];
+                for (const item of candidates) {
+                    if (typeof item === 'string' && item.trim().length > 0) {
+                        return item.trim();
+                    }
+                }
+            }
+            return '';
+        }
+
+        function applyProfileStatus(dotEl, textEl, rawStatus) {
+            if (!dotEl || !textEl) return;
+
+            const normalized = String(rawStatus || '').trim().toLowerCase();
+
+            // Reiniciar clases de color del indicador manteniendo sus dimensiones
+            dotEl.classList.remove('status-dot-online', 'status-dot-away', 'status-dot-offline');
+
+            if (normalized === 'online') {
+                dotEl.classList.add('status-dot-online');
+                dotEl.title = 'En línea';
+                textEl.textContent = 'En línea';
+            } else if (normalized === 'available') {
+                // Available = Ausente (Naranja), NO conectado
+                dotEl.classList.add('status-dot-away');
+                dotEl.title = 'Ausente';
+                textEl.textContent = 'Ausente';
+            } else {
+                // Estado desconocido, offline o error de red
+                dotEl.classList.add('status-dot-offline');
+                dotEl.title = 'No disponible';
+                textEl.textContent = 'No disponible';
+            }
+        }
+
+        async function checkSingleUserStatus(profileConfig) {
+            const dotEl = document.getElementById(profileConfig.dotId);
+            const textEl = document.getElementById(profileConfig.textId);
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+            try {
+                const response = await fetch(profileConfig.url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json, text/plain, */*' },
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    applyProfileStatus(dotEl, textEl, 'unknown');
+                    return;
+                }
+
+                const contentType = response.headers.get('content-type') || '';
+                let statusValue = '';
+
+                if (contentType.includes('application/json')) {
+                    const jsonData = await response.json();
+                    statusValue = extractApiStatusString(jsonData);
+                } else {
+                    const rawText = await response.text();
+                    try {
+                        const parsed = JSON.parse(rawText);
+                        statusValue = extractApiStatusString(parsed);
+                    } catch (_) {
+                        statusValue = rawText.trim();
+                    }
+                }
+
+                applyProfileStatus(dotEl, textEl, statusValue);
+            } catch (error) {
+                clearTimeout(timeoutId);
+                applyProfileStatus(dotEl, textEl, 'unknown');
+            }
+        }
+
+        function refreshAllStatuses() {
+            checkSingleUserStatus(STATUS_ENDPOINTS.fabi);
+            checkSingleUserStatus(STATUS_ENDPOINTS.jhon);
+        }
+
+        // Consulta inicial inmediata y actualización periódica cada 30 segundos
+        refreshAllStatuses();
+        setInterval(refreshAllStatuses, 30000);
+
+        // 3. Reproductor Musical Funcional con Slider Circular 3D (Rutas listas para GitHub: track1.mp3 a track4.mp3)
+        const PLAYLIST_3D = [
+            {
+                // Track 1
+                title: 'Engel',
+                artist: 'RAMMSTEIN',
+                itunesQuery: 'Rammstein Engel',
+                cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80&fm=jpg',
+                src: 'track1.mp3'
+            },
+            {
+                // Track 2
+                title: 'Te Amo, Te Extraño',
+                artist: 'GUAYACÁN ORQUESTA',
+                itunesQuery: 'Guayacan Orquesta Te Amo Te Extrano',
+                cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80&fm=jpg',
+                src: 'track2.mp3'
+            },
+            {
+                // Track 3
+                title: 'Adan y Eva',
+                artist: 'PAULO LONDRA',
+                itunesQuery: 'Paulo Londra Adan y Eva',
+                cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80&fm=jpg',
+                src: 'track3.mp3'
+            },
+            {
+                // Track 4
+                title: 'Prequel',
+                artist: 'FALLING IN REVERSE',
+                itunesQuery: 'Falling In Reverse Prequel',
+                cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80&fm=jpg',
+                src: 'track4.mp3'
+            }
+        ];
+
+        let currentTrackIndex = 0;
+        let isPlayingMusic = false;
+        const audioPlayer = new Audio();
+        audioPlayer.preload = 'metadata';
+        audioPlayer.volume = 0.75;
+        audioPlayer.src = PLAYLIST_3D[0].src;
+
+        function renderPlaylistUI() {
+            const carouselStage = document.getElementById('cover-carousel-3d');
+            if (carouselStage) {
+                carouselStage.innerHTML = PLAYLIST_3D.map((track, idx) => `
+                    <div class="cover-3d-item" data-index="${idx}" onclick="selectTrackByIndex(${idx})">
+                        <img id="cover-img-3d-${idx}" src="${track.cover}" alt="${track.title}" class="w-full h-full object-cover">
+                    </div>
+                `).join('');
+            }
+
+            const listContainer = document.getElementById('playlist-tracks-container');
+            if (listContainer) {
+                listContainer.innerHTML = PLAYLIST_3D.map((track, idx) => `
+                    <button 
+                        type="button"
+                        id="playlist-row-${idx}"
+                        onclick="selectTrackByIndex(${idx})"
+                        class="playlist-track-row w-full flex items-center gap-3 px-2.5 py-1.5 rounded-xl border border-transparent hover:bg-white/45 text-left"
+                    >
+                        <img 
+                            id="playlist-thumb-${idx}" 
+                            src="${track.cover}" 
+                            alt="${track.title}" 
+                            class="w-9 h-9 rounded-lg object-cover flex-shrink-0 border border-white/80 shadow-sm"
+                        >
+                        <div class="min-w-0 flex-1 leading-tight">
+                            <div class="text-[#2f1a23] font-bold text-xs sm:text-[13px] truncate">${track.title}</div>
+                            <div class="text-[#6e4658] text-[10px] sm:text-[11px] font-medium tracking-wider uppercase truncate mt-0.5">${track.artist}</div>
+                        </div>
+                    </button>
+                `).join('');
+            }
+
+            update3DCoverPositions();
+        }
+
+        // Obtiene automáticamente las portadas JPG oficiales desde iTunes respetando los archivos locales track1.mp3 - track4.mp3
+        async function enrichTracksFromItunes() {
+            await Promise.all(PLAYLIST_3D.map(async (track, idx) => {
+                if (!track.itunesQuery) return;
+                try {
+                    const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(track.itunesQuery)}&entity=song&limit=1`);
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (data && data.results && data.results.length > 0) {
+                        const item = data.results[0];
+                        if (item.artworkUrl100) {
+                            track.cover = item.artworkUrl100.replace('100x100bb', '400x400bb');
+                            const img3d = document.getElementById(`cover-img-3d-${idx}`);
+                            const thumb = document.getElementById(`playlist-thumb-${idx}`);
+                            if (img3d) img3d.src = track.cover;
+                            if (thumb) thumb.src = track.cover;
+                        }
+                    }
+                } catch (_) {
+                    // Conserva el cover JPG de respaldo si no hay conexión externa
+                }
+            }));
+        }
+
+        function formatSeconds(sec) {
+            if (!isFinite(sec) || sec < 0) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        function update3DCoverPositions() {
+            const items = document.querySelectorAll('#cover-carousel-3d .cover-3d-item');
+            const total = items.length;
+
+            items.forEach((item, index) => {
+                item.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
+                const diff = (index - currentTrackIndex + total) % total;
+
+                if (diff === 0) {
+                    item.classList.add('pos-center');
+                } else if (diff === 1) {
+                    item.classList.add('pos-right');
+                } else if (diff === total - 1) {
+                    item.classList.add('pos-left');
+                } else {
+                    item.classList.add('pos-hidden');
+                }
+            });
+
+            PLAYLIST_3D.forEach((_, idx) => {
+                const row = document.getElementById(`playlist-row-${idx}`);
+                if (row) {
+                    if (idx === currentTrackIndex) {
+                        row.classList.add('active-track');
+                    } else {
+                        row.classList.remove('active-track');
+                    }
+                }
+            });
+
+            const titleEl = document.getElementById('player-title');
+            const artistEl = document.getElementById('player-artist');
+            if (titleEl) titleEl.textContent = PLAYLIST_3D[currentTrackIndex].title;
+            if (artistEl) artistEl.textContent = PLAYLIST_3D[currentTrackIndex].artist;
+        }
+
+        renderPlaylistUI();
+        enrichTracksFromItunes();
+
+        // Función de entrada desde la Intro Screen con activación de audio en la primera pista
+        function enterMainSite() {
+            const introScreen = document.getElementById('intro-screen');
+            if (introScreen) {
+                introScreen.classList.add('is-hidden');
+            }
+
+            currentTrackIndex = 0;
+            update3DCoverPositions();
+            audioPlayer.src = PLAYLIST_3D[0].src;
+            audioPlayer.play().then(() => {
+                isPlayingMusic = true;
+                syncPlayIcon();
+            }).catch(() => {
+                isPlayingMusic = false;
+                syncPlayIcon();
+            });
+        }
+
+        function loadCurrentTrack(autoPlay) {
+            update3DCoverPositions();
+            audioPlayer.src = PLAYLIST_3D[currentTrackIndex].src;
+            audioPlayer.load();
+
+            const progressEl = document.getElementById('player-progress');
+            const currentTimeEl = document.getElementById('player-current-time');
+            if (progressEl) progressEl.value = 0;
+            if (currentTimeEl) currentTimeEl.textContent = '0:00';
+
+            if (autoPlay) {
+                audioPlayer.play().then(() => {
+                    isPlayingMusic = true;
+                    syncPlayIcon();
+                }).catch(() => {
+                    isPlayingMusic = false;
+                    syncPlayIcon();
+                });
+            }
+        }
+
+        function syncPlayIcon() {
+            const icon = document.getElementById('player-play-icon');
+            if (!icon) return;
+            icon.className = isPlayingMusic ? 'ph-fill ph-pause text-base' : 'ph-fill ph-play text-base';
+        }
+
+        function togglePlayMusic() {
+            if (audioPlayer.paused) {
+                audioPlayer.play().then(() => {
+                    isPlayingMusic = true;
+                    syncPlayIcon();
+                }).catch(() => {
+                    isPlayingMusic = false;
+                    syncPlayIcon();
+                });
+            } else {
+                audioPlayer.pause();
+                isPlayingMusic = false;
+                syncPlayIcon();
+            }
+        }
+
+        function nextTrack3D() {
+            currentTrackIndex = (currentTrackIndex + 1) % PLAYLIST_3D.length;
+            loadCurrentTrack(isPlayingMusic);
+        }
+
+        function prevTrack3D() {
+            currentTrackIndex = (currentTrackIndex - 1 + PLAYLIST_3D.length) % PLAYLIST_3D.length;
+            loadCurrentTrack(isPlayingMusic);
+        }
+
+        function selectTrackByIndex(index) {
+            if (index === currentTrackIndex) {
+                togglePlayMusic();
+                return;
+            }
+            currentTrackIndex = index;
+            loadCurrentTrack(true);
+        }
+
+        function togglePlayerLike() {
+            const btn = document.getElementById('player-like-btn');
+            if (!btn) return;
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('text-white');
+                icon.classList.toggle('text-pastel-500');
+            }
+        }
+
+        // Eventos del reproductor de audio
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            const durationEl = document.getElementById('player-duration');
+            if (durationEl && isFinite(audioPlayer.duration)) {
+                durationEl.textContent = formatSeconds(audioPlayer.duration);
+            }
+        });
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            const progressEl = document.getElementById('player-progress');
+            const currentTimeEl = document.getElementById('player-current-time');
+            if (currentTimeEl) {
+                currentTimeEl.textContent = formatSeconds(audioPlayer.currentTime);
+            }
+            if (progressEl && isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                progressEl.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            }
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+            nextTrack3D();
+        });
+
+        const progressInput = document.getElementById('player-progress');
+        if (progressInput) {
+            progressInput.addEventListener('input', (e) => {
+                if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                    const seekTime = (parseFloat(e.target.value) / 100) * audioPlayer.duration;
+                    audioPlayer.currentTime = seekTime;
+                }
+            });
+        }
+
+        const volumeInput = document.getElementById('player-volume');
+        if (volumeInput) {
+            volumeInput.addEventListener('input', (e) => {
+                audioPlayer.volume = parseFloat(e.target.value);
+            });
+        }
+
+        // 4. Interactividad de las barras del Hero Banner
+        const heroMessages = [
+            "Un rincón delicado en tonos rosa pastel creado para compartir mi estilo, creatividad y momentos favoritos. Amante de la estética suave, los detalles brillantes y la música tranquila que acompaña cada día en este espacio especial.",
+            "Me encanta coleccionar momentos bonitos, diseñar espacios acogedores y disfrutar de una estética limpia y armoniosa. ¡Gracias por visitar mi perfil oficial y formar parte de esta comunidad!",
+            "Siempre en línea para compartir nuevas ideas, inspiraciones y pequeños detalles en tonos pastel. Explora los recuadros animados para conocer cada faceta de FABI."
+        ];
+
+        function switchHeroMessage(index) {
+            const aboutText = document.getElementById('about-text');
+            if (aboutText && heroMessages[index]) {
+                aboutText.style.opacity = '0';
+                setTimeout(() => {
+                    aboutText.textContent = heroMessages[index];
+                    aboutText.style.opacity = '1';
+                }, 150);
+            }
+
+            for (let i = 0; i < 3; i++) {
+                const bar = document.getElementById(`slider-bar-${i}`);
+                if (bar) {
+                    if (i === index) {
+                        bar.className = "h-[6px] w-14 rounded-full bg-white transition-all duration-300";
+                    } else {
+                        bar.className = "h-[6px] w-14 rounded-full bg-white/45 hover:bg-white/70 transition-all duration-300";
+                    }
+                }
+            }
+        }
+
+        // 5. Ampliación vertical fluida del Avatar de FABI al hacer clic
+        function toggleFabiAvatarExpand(event) {
+            if (event) event.stopPropagation();
+            const popover = document.getElementById('fabi-avatar-popover');
+            const trigger = document.getElementById('fabi-avatar-trigger');
+            if (!popover) return;
+
+            const isOpen = popover.classList.toggle('is-open');
+            if (trigger) {
+                trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+        }
+
+        function closeFabiAvatarExpand(event) {
+            if (event) event.stopPropagation();
+            const popover = document.getElementById('fabi-avatar-popover');
+            const trigger = document.getElementById('fabi-avatar-trigger');
+            if (popover && popover.classList.contains('is-open')) {
+                popover.classList.remove('is-open');
+                if (trigger) trigger.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('fabi-avatar-popover');
+            const trigger = document.getElementById('fabi-avatar-trigger');
+            if (!popover || !popover.classList.contains('is-open')) return;
+            if (!popover.contains(e.target) && (!trigger || !trigger.contains(e.target))) {
+                closeFabiAvatarExpand();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeFabiAvatarExpand();
+            }
+        });
+
+        const fabiAvatarTrigger = document.getElementById('fabi-avatar-trigger');
+        if (fabiAvatarTrigger) {
+            fabiAvatarTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleFabiAvatarExpand(e);
+                }
+            });
+        }
+
+        // 6. Efecto Interactivo PREMIUM SOFT GLOW en el Render Principal de FABI
+        (function initFabiSoftGlow() {
+            const glowWrap = document.getElementById('fabi-glow-card');
+            if (!glowWrap) return;
+
+            const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+            if (isTouchDevice) return;
+
+            let targetX = 50;
+            let targetY = 50;
+            let currentX = 50;
+            let currentY = 50;
+            let isHovering = false;
+            let rafId = null;
+
+            function updateGlowPosition() {
+                currentX += (targetX - currentX) * 0.14;
+                currentY += (targetY - currentY) * 0.14;
+
+                glowWrap.style.setProperty('--glow-x', `${currentX.toFixed(2)}%`);
+                glowWrap.style.setProperty('--glow-y', `${currentY.toFixed(2)}%`);
+
+                const stillMoving =
+                    Math.abs(targetX - currentX) > 0.08 ||
+                    Math.abs(targetY - currentY) > 0.08;
+
+                if (isHovering || stillMoving) {
+                    rafId = requestAnimationFrame(updateGlowPosition);
+                } else {
+                    rafId = null;
+                }
+            }
+
+            function startGlowLoop() {
+                if (!rafId) {
+                    rafId = requestAnimationFrame(updateGlowPosition);
+                }
+            }
+
+            glowWrap.addEventListener('mouseenter', () => {
+                isHovering = true;
+                glowWrap.style.setProperty('--glow-opacity', '1');
+                startGlowLoop();
+            });
+
+            glowWrap.addEventListener('mousemove', (e) => {
+                const rect = glowWrap.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                targetX = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                targetY = Math.max(0, Math.min(100, (y / rect.height) * 100));
+
+                startGlowLoop();
+            });
+
+            glowWrap.addEventListener('mouseleave', () => {
+                isHovering = false;
+                targetX = 50;
+                targetY = 50;
+                glowWrap.style.setProperty('--glow-opacity', '0');
+                startGlowLoop();
+            });
+        })();
+
+        // 6.5 Destellos luminosos aleatorios en la interfaz utilizando el recurso original shine2.png
+        (function initAmbientInterfaceSparkles() {
+            const targetSelectors = [
+                '#music-player-card',
+                '#cover-carousel-3d',
+                '#pisces-info-card',
+                '#clock-info-card',
+                '.gif-card',
+                '#hero-section > .glass-pink-solid'
+            ];
+
+            let activeSparkles = 0;
+            const MAX_SPARKLES = 5;
+
+            function spawnRandomSparkle() {
+                if (document.hidden || activeSparkles >= MAX_SPARKLES) return;
+
+                const candidates = document.querySelectorAll(targetSelectors.join(','));
+                if (!candidates.length) return;
+
+                const container = candidates[Math.floor(Math.random() * candidates.length)];
+                if (!container) return;
+
+                activeSparkles++;
+                const sp = document.createElement('span');
+                sp.className = 'ui-ambient-sparkle';
+                sp.setAttribute('aria-hidden', 'true');
+
+                // Posiciones en bordes y zonas libres para no cubrir textos ni controles centrales
+                const edgeZone = Math.random() > 0.5;
+                const posX = edgeZone ? (4 + Math.random() * 18) : (74 + Math.random() * 20);
+                const posY = 6 + Math.random() * 82;
+                const size = 20 + Math.random() * 16; // 20px a 36px para apreciar nitidez de shine2.png
+                const dur = (1.9 + Math.random() * 1.3).toFixed(2);
+                const maxOp = (0.68 + Math.random() * 0.28).toFixed(2);
+
+                sp.style.width = `${size.toFixed(1)}px`;
+                sp.style.height = `${size.toFixed(1)}px`;
+                sp.style.left = `${posX.toFixed(1)}%`;
+                sp.style.top = `${posY.toFixed(1)}%`;
+                sp.style.setProperty('--sp-dur', `${dur}s`);
+                sp.style.setProperty('--sp-op', maxOp);
+
+                container.appendChild(sp);
+
+                const removeSparkle = () => {
+                    if (sp.parentNode) sp.parentNode.removeChild(sp);
+                    activeSparkles = Math.max(0, activeSparkles - 1);
+                };
+
+                sp.addEventListener('animationend', removeSparkle, { once: true });
+                setTimeout(removeSparkle, parseFloat(dur) * 1000 + 150);
+            }
+
+            setInterval(() => {
+                spawnRandomSparkle();
+                if (Math.random() > 0.55) {
+                    setTimeout(spawnRandomSparkle, 450);
+                }
+            }, 1400);
+        })();
+
+        // 6.8 Efecto de destellos (sparkles) al mover el cursor con limitación de frecuencia para máximo rendimiento
+        (function initCursorSparkleTrail() {
+            const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+            if (isTouch) return;
+
+            let lastSpawnTime = 0;
+            let lastX = 0;
+            let lastY = 0;
+            let activeCursorSparkles = 0;
+            const MAX_CURSOR_SPARKLES = 22;
+            const SPARKLE_COLORS = [
+                'radial-gradient(circle, #ffffff 20%, #ffb6d3 80%)',
+                'radial-gradient(circle, #ffffff 30%, #ffd6e7 85%)',
+                'radial-gradient(circle, #fff5f9 25%, #ff85b3 85%)'
+            ];
+
+            window.addEventListener('pointermove', (e) => {
+                const now = performance.now();
+                if (now - lastSpawnTime < 34 || activeCursorSparkles >= MAX_CURSOR_SPARKLES) return;
+
+                const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+                if (dist < 10) return;
+
+                lastSpawnTime = now;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                activeCursorSparkles++;
+
+                const sp = document.createElement('span');
+                sp.className = 'cursor-sparkle-particle';
+                sp.setAttribute('aria-hidden', 'true');
+
+                const size = 6 + Math.random() * 6; // 6px a 12px
+                const dx = (Math.random() - 0.5) * 24;
+                const dy = 8 + Math.random() * 18;
+                const dur = Math.round(460 + Math.random() * 240);
+                const bg = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
+
+                sp.style.width = `${size.toFixed(1)}px`;
+                sp.style.height = `${size.toFixed(1)}px`;
+                sp.style.left = `${e.clientX - size / 2}px`;
+                sp.style.top = `${e.clientY - size / 2}px`;
+                sp.style.background = bg;
+                sp.style.boxShadow = '0 0 6px rgba(255, 255, 255, 0.9)';
+                sp.style.setProperty('--cs-dx', `${dx.toFixed(1)}px`);
+                sp.style.setProperty('--cs-dy', `${dy.toFixed(1)}px`);
+                sp.style.setProperty('--cs-dur', `${dur}ms`);
+
+                document.body.appendChild(sp);
+
+                const cleanup = () => {
+                    if (sp.parentNode) sp.parentNode.removeChild(sp);
+                    activeCursorSparkles = Math.max(0, activeCursorSparkles - 1);
+                };
+
+                sp.addEventListener('animationend', cleanup, { once: true });
+                setTimeout(cleanup, dur + 80);
+            }, { passive: true });
+        })();
+
+        // 7. Bloqueo disuasorio de teclas de desarrollador (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+        document.addEventListener('keydown', (e) => {
+            const key = (e.key || '').toUpperCase();
+            const isF12 = e.key === 'F12' || e.keyCode === 123;
+            const isCtrlShiftI = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'I';
+            const isCtrlShiftJ = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'J';
+            const isCtrlShiftC = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'C';
+            const isCtrlU = (e.ctrlKey || e.metaKey) && !e.shiftKey && key === 'U';
+
+            if (isF12 || isCtrlShiftI || isCtrlShiftJ || isCtrlShiftC || isCtrlU) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
