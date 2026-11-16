@@ -18,18 +18,21 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'Noto Sans JP', 'sans-serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                        jp: ['"Noto Sans JP"', 'sans-serif'],
                     },
                     colors: {
                         pastel: {
-                            50: '#fff5f8',
-                            100: '#ffe8f0',
-                            200: '#ffd1e1',
-                            300: '#ffb0cc',
-                            400: '#f48fb1',
-                            500: '#d87a9e', // Dusty rose primary accent (replaces slate blue #5b789c)
-                            600: '#b85c80', // Darker rose for borders & strong accents
+                            50: '#fff8fb',
+                            100: '#ffebf3',
+                            200: '#ffd6e7',
+                            300: '#f7b6cf',
+                            400: '#e592b2',
+                            500: '#d87a9e',
+                            600: '#b85c80',
                             700: '#8c3f5d',
+                            800: '#5e283d',
+                            900: '#4a2c38',
                         }
                     }
                 }
@@ -39,97 +42,178 @@
 
     <style>
         /* Unborn 8.0 Pink Pointer - https://www.cursors-4u.com/cursor/unborn-8-0-pink-pointer */
-        *, *::before, *::after, html, body, a, button, input, [role="button"] {
+        *, *::before, *::after, html, body, a, button, input {
             cursor: url('https://cdn.cursors-4u.net/previews/unborn-8-0-pink-pointer-19947d27-32.webp') 32 32, auto !important;
         }
         /* End www.Cursors-4U.com Code */
 
-        /* Reset & Base Styling */
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
         body {
-            font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
             overflow-x: hidden;
-            background-color: #f8dce6;
+            position: relative;
             color: #4a2c38;
         }
 
-        /* Background Principal Fijo con integración Rosa Pastel */
+        /* Background Principal Fijo con integración Rosa Pastel y Efecto Liquid WebGL */
         .site-bg {
             position: fixed;
             inset: 0;
-            z-index: -2;
+            z-index: -3;
             background-image: url('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/background3.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
+            filter: brightness(0.89) saturate(0.86);
         }
 
-        /* Sutileza de superposición pastel como en la referencia (degradado lateral suave a claro) */
+        #liquid-bg-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            display: block;
+            filter: brightness(0.89) saturate(0.86);
+        }
+
+        /* Transición suave para ocultar y mostrar todo el Hub al hacer clic en el background */
+        .hub-main-container {
+            transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.hub-is-hidden .hub-main-container {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            user-select: none;
+        }
+
+        /* Sutileza de superposición pastel + ligero degradado inferior profesional */
         .site-bg-overlay {
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: linear-gradient(
-                90deg,
-                rgba(216, 122, 158, 0.48) 0%,
-                rgba(240, 185, 207, 0.32) 45%,
-                rgba(255, 245, 249, 0.55) 100%
-            );
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            pointer-events: none;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(255, 240, 247, 0.02) 0%,
+                    rgba(216, 122, 158, 0.06) 62%,
+                    rgba(88, 28, 52, 0.38) 100%
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(216, 122, 158, 0.18) 0%,
+                    rgba(240, 185, 207, 0.10) 45%,
+                    rgba(255, 245, 249, 0.18) 100%
+                );
         }
 
-        /* Tarjetas Glassmorphism Rosa Empolvado (Reemplaza el azul #5b789c de la referencia) */
+        /* Paneles Rosa Pastel Translúcidos (Hero Banner de Renders y Tarjeta de Piscis) — Liquid Glass iOS 26 */
         .glass-pink-solid {
-            background: rgba(214, 126, 160, 0.80);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            box-shadow: 0 14px 30px -6px rgba(138, 62, 92, 0.22),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.35);
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
+            background: linear-gradient(
+                135deg,
+                rgba(224, 134, 172, 0.34) 0%,
+                rgba(198, 102, 140, 0.22) 100%
+            );
+            backdrop-filter: blur(12px) saturate(185%);
+            -webkit-backdrop-filter: blur(12px) saturate(185%);
+            border: 1px solid rgba(255, 206, 226, 0.68);
+            box-shadow: 0 18px 38px -8px rgba(105, 38, 66, 0.22),
+                        inset 0 1px 1.5px rgba(255, 218, 234, 0.78),
+                        inset 0 -1px 1px rgba(255, 192, 218, 0.25);
         }
 
-        /* Tarjetas Glassmorphism Blancas con Borde Rosa Empolvado (About Me, Reloj, Barra inferior) */
+        /* Contenedor Base Translúcido con Borde Rosa Pastel Claro (Reproductor Musical) — Liquid Glass iOS 26 */
         .glass-white-bordered {
-            background: rgba(255, 250, 252, 0.84);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 2.2px solid rgba(196, 108, 142, 0.75);
-            box-shadow: 0 12px 26px -6px rgba(145, 70, 100, 0.16),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 225, 238, 0.26) 0%,
+                rgba(235, 162, 192, 0.14) 100%
+            );
+            backdrop-filter: blur(12px) saturate(190%);
+            -webkit-backdrop-filter: blur(12px) saturate(190%);
+            border: 1px solid rgba(255, 206, 226, 0.70);
+            box-shadow: 0 14px 32px -8px rgba(105, 38, 66, 0.18),
+                        inset 0 1px 1.5px rgba(255, 220, 235, 0.82),
+                        inset 0 -1px 1px rgba(255, 194, 218, 0.24);
         }
 
-        /* Recuadro del Reloj y Calendario — Glassmorphism Auténtico */
+        /* Recuadro del Reloj y Calendario — Efecto Liquid Glass iOS 26 */
         .clock-glass-card {
-            background: rgba(255, 246, 250, 0.44);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1.5px solid rgba(255, 255, 255, 0.68);
-            box-shadow: 0 10px 26px -6px rgba(138, 62, 92, 0.18),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.82);
+            background: linear-gradient(
+                135deg,
+                rgba(245, 190, 215, 0.24) 0%,
+                rgba(216, 130, 165, 0.14) 100%
+            );
+            backdrop-filter: blur(12px) saturate(190%);
+            -webkit-backdrop-filter: blur(12px) saturate(190%);
+            border: 1px solid rgba(255, 206, 226, 0.72);
+            box-shadow: 0 16px 34px -8px rgba(105, 38, 66, 0.20),
+                        inset 0 1px 1.5px rgba(255, 220, 235, 0.82),
+                        inset 0 -1px 1px rgba(255, 190, 216, 0.26);
         }
 
-        /* Tarjetas de los 4 Recuadros con GIF */
+        /* Tarjetas de los 4 Recuadros con GIF — Marco Cristalino Rosa Pastel Claro + Efecto Inner Shine */
         .gif-card {
-            background: rgba(255, 248, 251, 0.72);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 12px 24px -6px rgba(138, 62, 92, 0.20);
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 220, 235, 0.18);
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            border: 1px solid rgba(255, 206, 226, 0.72);
+            box-shadow: 0 12px 28px -6px rgba(105, 38, 66, 0.20),
+                        inset 0 1px 1px rgba(255, 220, 236, 0.75);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.35s ease,
+                        border-color 0.35s ease;
         }
 
         .gif-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 18px 32px -6px rgba(138, 62, 92, 0.30);
+            border-color: rgba(255, 228, 240, 0.95);
+            box-shadow: 0 18px 34px -6px rgba(138, 62, 92, 0.32),
+                        inset 0 0 18px rgba(255, 235, 244, 0.55);
+        }
+
+        /* Barrido luminoso Inner Shine al pasar el cursor sobre cada GIF */
+        .gif-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -140%;
+            width: 85%;
+            height: 100%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 238, 246, 0.56) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-24deg);
+            transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        .gif-card:hover::after {
+            left: 150%;
+        }
+
+        .gif-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: inset 0 0 16px rgba(255, 230, 242, 0);
+            transition: box-shadow 0.4s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .gif-card:hover::before {
+            box-shadow: inset 0 0 18px rgba(255, 240, 247, 0.72);
         }
 
         /* Degradado inferior en las tarjetas GIF igual a la referencia */
@@ -159,14 +243,12 @@
             animation: pulse-online 2.2s infinite;
         }
 
-        /* Sombra suave para el render principal de FABI */
+        /* Sombra suave y Gradient Fade inferior para el render principal de FABI sin recorte superior */
         .fabi-render {
             position: relative;
             z-index: 2;
-            filter: drop-shadow(-6px 8px 16px rgba(115, 45, 72, 0.28));
-            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform, filter;
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 84%, rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 84%, rgba(0, 0, 0, 0) 100%);
         }
 
         /* 1. Efecto Hover en Avatares: Inner Shine + Zoom contenido en el círculo */
@@ -230,25 +312,25 @@
             transform: scale(1.48);
             transform-origin: 50% 24%;
         }
-
-        .avatar-circle-inner:hover .fabi-avatar-zoom {
-            transform: scale(1.66);
-        }
-
-        /* Tarjeta desplegable hacia abajo al hacer clic en el avatar de FABI */
+        /* Tarjeta desplegable hacia abajo al hacer clic en el avatar de FABI (Efecto Liquid Glass) */
         .fabi-avatar-popover {
             position: absolute;
             top: calc(100% + 10px);
             left: 0;
             width: 235px;
             border-radius: 22px;
-            padding: 7px;
-            background: rgba(255, 248, 252, 0.92);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 2px solid rgba(255, 255, 255, 0.92);
-            box-shadow: 0 22px 44px -8px rgba(115, 42, 72, 0.42),
-                        0 0 0 1px rgba(216, 122, 158, 0.32);
+            padding: 8px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 220, 236, 0.32) 0%,
+                rgba(232, 152, 186, 0.18) 100%
+            );
+            backdrop-filter: blur(12px) saturate(185%);
+            -webkit-backdrop-filter: blur(12px) saturate(185%);
+            border: 1px solid rgba(255, 206, 226, 0.72);
+            box-shadow: 0 20px 42px -8px rgba(95, 32, 58, 0.36),
+                        inset 0 1px 1.5px rgba(255, 220, 236, 0.82),
+                        inset 0 -1px 1px rgba(255, 192, 218, 0.28);
             transform-origin: 28px top;
             transform: translateY(-10px) scaleY(0.25) scaleX(0.35);
             opacity: 0;
@@ -270,40 +352,46 @@
         /* 2. Efecto Alternativo en el Render Principal: PREMIUM SOFT GLOW */
         .fabi-render-stage {
             position: relative;
+            line-height: 0;
         }
 
         .fabi-glow-wrap {
             position: relative;
-            display: inline-block;
+            display: block;
+            line-height: 0;
             cursor: pointer;
             --glow-x: 50%;
             --glow-y: 50%;
             --glow-opacity: 0;
+            filter: drop-shadow(-6px 8px 16px rgba(115, 45, 72, 0.28));
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, filter;
         }
 
-        /* Halo difuso que acompaña sutilmente al cursor detrás del render */
+        /* Halo difuso amplio sin bordes rectos que acompaña sutilmente al cursor detrás del render */
         .fabi-soft-aura {
             position: absolute;
-            inset: -18px;
+            inset: -48px;
             pointer-events: none;
             z-index: 1;
             opacity: var(--glow-opacity, 0);
             transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
             background: radial-gradient(
-                180px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-                rgba(255, 245, 250, 0.72) 0%,
-                rgba(255, 196, 220, 0.42) 42%,
-                rgba(216, 122, 158, 0) 76%
+                170px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+                rgba(255, 245, 250, 0.68) 0%,
+                rgba(255, 196, 220, 0.36) 38%,
+                rgba(216, 122, 158, 0) 68%
             );
-            filter: blur(12px);
+            filter: blur(16px);
             border-radius: 9999px;
         }
 
         @media (hover: hover) and (pointer: fine) {
-            .fabi-glow-wrap:hover .fabi-render {
+            .fabi-glow-wrap:hover {
                 transform: translateY(-4px) scale(1.03);
                 filter:
-                    drop-shadow(0 0 14px rgba(255, 240, 247, 0.68))
+                    drop-shadow(0 0 16px rgba(255, 240, 247, 0.65))
                     drop-shadow(-8px 14px 24px rgba(115, 45, 72, 0.36));
             }
         }
@@ -366,19 +454,35 @@
             animation: pulse-away 2.4s infinite;
         }
 
-        .status-dot-offline {
-            background-color: #a4b0be;
-            animation: none;
+        @keyframes pulse-offline {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.75);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 5px rgba(255, 71, 87, 0);
+            }
         }
 
-        /* Reproductor Musical Glassmorphism con Slider Circular 3D */
+        .status-dot-offline {
+            background-color: #ff4757;
+            animation: pulse-offline 2.2s infinite;
+        }
+
+        /* Reproductor Musical Glassmorphism con Slider Circular 3D — Liquid Glass iOS 26 */
         .music-glass-card {
-            background: rgba(244, 218, 232, 0.52);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1.5px solid rgba(255, 255, 255, 0.75);
-            box-shadow: 0 8px 22px -6px rgba(145, 70, 100, 0.18),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.85);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 225, 238, 0.26) 0%,
+                rgba(232, 158, 188, 0.14) 100%
+            );
+            backdrop-filter: blur(12px) saturate(190%);
+            -webkit-backdrop-filter: blur(12px) saturate(190%);
+            border: 1px solid rgba(255, 206, 226, 0.70);
+            box-shadow: 0 14px 32px -8px rgba(105, 38, 66, 0.18),
+                        inset 0 1px 1.5px rgba(255, 220, 235, 0.82),
+                        inset 0 -1px 1px rgba(255, 192, 218, 0.25);
         }
 
         .carousel-3d-stage {
@@ -402,7 +506,7 @@
                         opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
                         box-shadow 0.55s ease,
                         filter 0.55s ease;
-            border: 2px solid rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(255, 210, 228, 0.85);
             cursor: pointer;
             will-change: transform, opacity;
         }
@@ -438,13 +542,81 @@
             pointer-events: none;
         }
 
-        /* Sliders personalizados del reproductor */
+        /* Controles y Sliders Liquid Glass iOS 26 del Reproductor (Compatibles con Chrome, Safari, Firefox, Opera) */
+        .ios-glass-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 236, 245, 0.46) 0%,
+                rgba(232, 152, 186, 0.28) 100%
+            );
+            border: 1px solid rgba(255, 214, 232, 0.82);
+            box-shadow: 0 6px 16px -3px rgba(105, 38, 66, 0.22),
+                        inset 0 1px 1.5px rgba(255, 245, 250, 0.88),
+                        inset 0 -1px 1px rgba(216, 122, 158, 0.28);
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(115, 38, 68, 0.45);
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.28s ease,
+                        background 0.28s ease,
+                        border-color 0.28s ease;
+        }
+
+        .ios-glass-btn:hover {
+            transform: translateY(-1.5px) scale(1.07);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 242, 248, 0.56) 0%,
+                rgba(238, 165, 196, 0.36) 100%
+            );
+            border-color: rgba(255, 230, 242, 0.95);
+            box-shadow: 0 10px 22px -4px rgba(125, 42, 74, 0.32),
+                        0 0 12px rgba(255, 215, 232, 0.55),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.92);
+        }
+
+        .ios-glass-btn:active {
+            transform: scale(0.95);
+        }
+
+        .ios-glass-btn-primary {
+            background: linear-gradient(
+                135deg,
+                rgba(244, 143, 177, 0.56) 0%,
+                rgba(216, 112, 152, 0.38) 100%
+            );
+            border: 1px solid rgba(255, 222, 236, 0.88);
+            box-shadow: 0 8px 20px -4px rgba(115, 38, 68, 0.32),
+                        inset 0 1.5px 2px rgba(255, 245, 250, 0.9),
+                        inset 0 -1px 1.5px rgba(184, 92, 128, 0.35);
+        }
+
+        .ios-glass-pill {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 235, 244, 0.30) 0%,
+                rgba(232, 162, 192, 0.16) 100%
+            );
+            border: 1px solid rgba(255, 212, 230, 0.65);
+            box-shadow: inset 0 1px 1px rgba(255, 240, 247, 0.68),
+                        0 4px 12px -3px rgba(105, 38, 66, 0.14);
+        }
+
         .pastel-range {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
-            background: rgba(255, 255, 255, 0.85);
-            height: 4px;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 230, 242, 0.58) 0%,
+                rgba(255, 196, 220, 0.38) 100%
+            );
+            height: 6px;
             border-radius: 999px;
+            border: 1px solid rgba(255, 220, 236, 0.72);
+            box-shadow: inset 0 1px 2px rgba(115, 38, 68, 0.18),
+                        0 1px 2px rgba(255, 240, 247, 0.5);
             outline: none;
             cursor: pointer;
         }
@@ -452,18 +624,49 @@
         .pastel-range::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 11px;
-            height: 11px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid #d87a9e;
-            box-shadow: 0 1px 4px rgba(138, 62, 92, 0.35);
+            background: radial-gradient(circle at 32% 30%, #ffffff 0%, #ffd6e7 68%, #f48fb1 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 7px rgba(115, 38, 68, 0.42),
+                        inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
             cursor: pointer;
-            transition: transform 0.15s ease;
+            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
         }
 
         .pastel-range::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
+            transform: scale(1.22);
+            box-shadow: 0 0 10px rgba(255, 215, 232, 0.9),
+                        0 3px 8px rgba(115, 38, 68, 0.48);
+        }
+
+        /* Soporte nativo para Mozilla Firefox */
+        .pastel-range::-moz-range-track {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 230, 242, 0.58) 0%,
+                rgba(255, 196, 220, 0.38) 100%
+            );
+            height: 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 220, 236, 0.72);
+        }
+
+        .pastel-range::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 30%, #ffffff 0%, #ffd6e7 68%, #f48fb1 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 7px rgba(115, 38, 68, 0.42),
+                        inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
+            cursor: pointer;
+            transition: transform 0.18s ease;
+        }
+
+        .pastel-range::-moz-range-thumb:hover {
+            transform: scale(1.22);
         }
 
         /* ==========================================
@@ -558,7 +761,6 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            mix-blend-mode: screen;
             opacity: 0;
             will-change: transform, opacity;
             filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
@@ -717,7 +919,6 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            mix-blend-mode: screen;
             filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
             transform: scale(0) rotate(0deg);
             opacity: 0;
@@ -767,24 +968,103 @@
             }
         }
 
-        /* Lista de canciones compacta integrada en el reproductor */
+        /* Lista de canciones compacta integrada en el reproductor con Scrollbar Liquid Glass iOS 26 */
         .playlist-mini-list {
-            max-height: 112px;
+            max-height: 114px;
             overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 6px;
+            -webkit-overflow-scrolling: touch;
+            /* Firefox custom scrollbar */
             scrollbar-width: thin;
+            scrollbar-color: rgba(255, 206, 226, 0.78) rgba(255, 228, 240, 0.16);
         }
 
+        /* Chrome, Safari, Edge, Opera custom glass scrollbar */
         .playlist-mini-list::-webkit-scrollbar {
-            width: 4px;
+            width: 6px;
+        }
+
+        .playlist-mini-list::-webkit-scrollbar-track {
+            background: rgba(255, 226, 238, 0.16);
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 206, 226, 0.32);
+            box-shadow: inset 0 1px 2px rgba(105, 38, 66, 0.12);
+            margin: 3px 0;
+        }
+
+        .playlist-mini-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                180deg,
+                rgba(255, 232, 242, 0.85) 0%,
+                rgba(232, 142, 178, 0.75) 100%
+            );
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 240, 247, 0.85);
+            box-shadow: 0 2px 6px rgba(105, 38, 66, 0.25),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        }
+
+        .playlist-mini-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(
+                180deg,
+                rgba(255, 242, 248, 0.96) 0%,
+                rgba(216, 122, 158, 0.90) 100%
+            );
         }
 
         .playlist-track-row {
-            transition: background 0.2s ease, transform 0.2s ease;
+            transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .playlist-track-row:hover {
+            background: rgba(255, 230, 242, 0.22);
+            border-color: rgba(255, 210, 228, 0.55);
         }
 
         .playlist-track-row.active-track {
-            background: rgba(216, 122, 158, 0.28);
-            border-color: rgba(255, 255, 255, 0.85);
+            background: linear-gradient(
+                135deg,
+                rgba(255, 224, 238, 0.34) 0%,
+                rgba(216, 122, 158, 0.22) 100%
+            );
+            border-color: rgba(255, 214, 232, 0.82);
+            box-shadow: 0 6px 14px -4px rgba(105, 38, 66, 0.18),
+                        inset 0 1px 1px rgba(255, 240, 247, 0.75);
+        }
+
+        /* Firma Inferior Interactiva con Glow elegante al pasar el cursor */
+        .footer-signature-link {
+            display: inline-block;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+                        text-shadow 0.32s ease,
+                        filter 0.32s ease,
+                        letter-spacing 0.32s ease;
+            text-shadow: 0 1px 3px rgba(140, 63, 93, 0.55);
+        }
+
+        .footer-signature-link:hover {
+            transform: translateY(-1.5px) scale(1.03);
+            color: #FFFFFF;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.95),
+                         0 0 16px rgba(255, 192, 220, 0.9),
+                         0 0 28px rgba(255, 130, 182, 0.75);
+            filter: drop-shadow(0 0 10px rgba(255, 210, 230, 0.65));
+        }
+
+        /* Ajustes de fidelidad visual en dispositivos móviles manteniendo el aspecto de escritorio */
+        @media (max-width: 640px) {
+            .fabi-avatar-popover {
+                width: 215px;
+            }
+            .carousel-3d-stage {
+                width: 112px;
+                height: 112px;
+            }
         }
 
         /* Gradientes animados progresivos hacia arriba-izquierda (dirección de la flecha: ~302deg) que aparecen y desaparecen suavemente */
@@ -837,6 +1117,98 @@
             -webkit-text-fill-color: transparent;
             animation: nameDiagonalWave 3.2s linear infinite;
             filter: drop-shadow(0 1px 3px rgba(120, 28, 52, 0.52));
+        }
+
+        /* Gradientes luminosos de alto contraste para Reloj, Calendario y Piscis */
+        .pisces-gradient-text {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #ffffff 0%,
+                #ffe3ef 26%,
+                #ff9ec4 48%,
+                #ffffff 68%,
+                #ffd1e4 100%
+            );
+            background-size: 260% 260%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 4s linear infinite;
+            filter: drop-shadow(0 2px 5px rgba(112, 34, 64, 0.52));
+        }
+
+        .clock-bright-gradient {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #ffffff 0%,
+                #ffe6f1 25%,
+                #ff85b6 50%,
+                #ffc4dc 72%,
+                #ffffff 100%
+            );
+            background-size: 260% 260%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 3.8s linear infinite;
+            filter: drop-shadow(0 2px 6px rgba(105, 28, 58, 0.58));
+        }
+
+        .clock-date-gradient {
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #ffe4f0 50%,
+                #ffc8df 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 1.5px 4px rgba(98, 26, 54, 0.58));
+        }
+
+        /* Gradientes animados para los textos del Reproductor Musical (Títulos, Artistas, Tiempos y Playlist) */
+        .player-title-gradient {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #ffffff 0%,
+                #ffe6f2 26%,
+                #ff6fa5 50%,
+                #ffd1e4 74%,
+                #ffffff 100%
+            );
+            background-size: 260% 260%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 3.6s linear infinite;
+            filter: drop-shadow(0 1.5px 4px rgba(102, 28, 56, 0.55));
+        }
+
+        .player-sub-gradient {
+            display: inline-block;
+            background: linear-gradient(
+                302deg,
+                #fff5f9 0%,
+                #ffc4dc 32%,
+                #ff85b3 52%,
+                #ffe3ef 76%,
+                #ffffff 100%
+            );
+            background-size: 260% 260%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameDiagonalWave 4.2s linear infinite;
+            filter: drop-shadow(0 1px 3px rgba(96, 26, 52, 0.52));
         }
 
         /* Rastro de destellos (sparkles) ligeros al mover el cursor */
@@ -930,12 +1302,213 @@
         </div>
     </div>
 
-    <!-- Fondo General detrás de toda la interfaz -->
-    <div class="site-bg" aria-hidden="true"></div>
+    <!-- Shaders WebGL para el Efecto Liquid Fluid sobre el Background -->
+    <script type="x-shader/x-fragment" id="vertShader">
+        precision highp float;
+
+        varying vec2 vUv;
+        attribute vec2 a_position;
+
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform vec2 u_texel;
+
+        void main () {
+            vUv = .5 * (a_position + 1.);
+            vL = vUv - vec2(u_texel.x, 0.);
+            vR = vUv + vec2(u_texel.x, 0.);
+            vT = vUv + vec2(0., u_texel.y);
+            vB = vUv - vec2(0., u_texel.y);
+            gl_Position = vec4(a_position, 0., 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderAdvection">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying vec2 vUv;
+        uniform sampler2D u_velocity_texture;
+        uniform sampler2D u_input_texture;
+        uniform vec2 u_texel;
+        uniform vec2 u_output_textel;
+        uniform float u_dt;
+        uniform float u_dissipation;
+
+        vec4 bilerp (sampler2D sam, vec2 uv, vec2 tsize) {
+            vec2 st = uv / tsize - 0.5;
+
+            vec2 iuv = floor(st);
+            vec2 fuv = fract(st);
+
+            vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tsize);
+            vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tsize);
+            vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tsize);
+            vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tsize);
+
+            return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+        }
+
+        void main () {
+            vec2 coord = vUv - u_dt * bilerp(u_velocity_texture, vUv, u_texel).xy * u_texel;
+            vec4 velocity = bilerp(u_input_texture, coord, u_output_textel);
+            gl_FragColor = u_dissipation * velocity;
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderDivergence">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D u_velocity_texture;
+
+        void main () {
+            float L = texture2D(u_velocity_texture, vL).x;
+            float R = texture2D(u_velocity_texture, vR).x;
+            float T = texture2D(u_velocity_texture, vT).y;
+            float B = texture2D(u_velocity_texture, vB).y;
+
+            float div = .25 * (R - L + T - B);
+            gl_FragColor = vec4(div, 0., 0., 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderPressure">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D u_pressure_texture;
+        uniform sampler2D u_divergence_texture;
+
+        void main () {
+            float L = texture2D(u_pressure_texture, vL).x;
+            float R = texture2D(u_pressure_texture, vR).x;
+            float T = texture2D(u_pressure_texture, vT).x;
+            float B = texture2D(u_pressure_texture, vB).x;
+            float divergence = texture2D(u_divergence_texture, vUv).x;
+            float pressure = (L + R + B + T - divergence) * .25;
+
+            gl_FragColor = vec4(pressure, 0., 0., 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderGradientSubtract">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D u_pressure_texture;
+        uniform sampler2D u_velocity_texture;
+
+        void main () {
+            float L = texture2D(u_pressure_texture, vL).x;
+            float R = texture2D(u_pressure_texture, vR).x;
+            float T = texture2D(u_pressure_texture, vT).x;
+            float B = texture2D(u_pressure_texture, vB).x;
+            vec2 velocity = texture2D(u_velocity_texture, vUv).xy;
+            velocity.xy -= vec2(R - L, T - B);
+            gl_FragColor = vec4(velocity, 0., 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderPoint">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying vec2 vUv;
+        uniform sampler2D u_input_texture;
+        uniform float u_ratio;
+        uniform float u_img_ratio;
+        uniform vec3 u_point_value;
+        uniform vec2 u_point;
+        uniform float u_point_size;
+
+        void main () {
+            vec2 p = vUv - u_point.xy;
+            p.x *= u_ratio;
+            vec3 splat = .6 * pow(2., -dot(p, p) / u_point_size) * u_point_value;
+
+            vec3 base = texture2D(u_input_texture, vUv).xyz;
+            gl_FragColor = vec4(base + splat, 1.);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShaderOutputShader">
+        precision highp float;
+        precision highp sampler2D;
+
+        varying vec2 vUv;
+        uniform float u_ratio;
+        uniform float u_img_ratio;
+        uniform float u_disturb_power;
+        uniform sampler2D u_output_texture;
+        uniform sampler2D u_velocity_texture;
+        uniform sampler2D u_text_texture;
+        uniform vec2 u_point;
+        uniform vec2 u_texel;
+
+        vec4 bilerp (sampler2D sam, vec2 uv, vec2 tsize) {
+            vec2 st = uv / tsize - 0.5;
+            vec2 iuv = floor(st);
+            vec2 fuv = fract(st);
+
+            vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tsize);
+            vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tsize);
+            vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tsize);
+            vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tsize);
+
+            return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+        }
+
+        vec2 get_img_uv() {
+            vec2 img_uv = vUv - .5;
+            if (u_ratio > u_img_ratio) {
+                img_uv.y = img_uv.y * u_img_ratio / u_ratio;
+            } else {
+                img_uv.x = img_uv.x * u_ratio / u_img_ratio;
+            }
+            img_uv += .5;
+            return img_uv;
+        }
+
+        void main () {
+            float offset = bilerp(u_output_texture, vUv, u_texel).r;
+            vec2 velocity = bilerp(u_velocity_texture, vUv, u_texel).xy;
+            vec2 normVel = velocity / (length(velocity) + 0.08);
+
+            vec2 img_uv = get_img_uv();
+            img_uv -= u_disturb_power * normVel * offset;
+            img_uv -= u_disturb_power * normVel * offset;
+            img_uv = clamp(img_uv, 0.001, 0.999);
+
+            vec3 img = texture2D(u_text_texture, vec2(img_uv.x, 1. - img_uv.y)).rgb;
+            gl_FragColor = vec4(img, 1.);
+        }
+    </script>
+
+    <!-- Fondo General detrás de toda la interfaz con Simulación Liquid WebGL -->
+    <div id="site-bg-el" class="site-bg" aria-hidden="true"></div>
+    <canvas id="liquid-bg-canvas" aria-hidden="true"></canvas>
     <div class="site-bg-overlay" aria-hidden="true"></div>
 
     <!-- Contenedor Principal (Misma proporción y ancho que el diseño original) -->
-    <main class="w-full max-w-[850px] mx-auto relative z-10">
+    <main id="main-hub-container" class="hub-main-container w-full max-w-[850px] mx-auto relative z-10">
 
         <!-- ==========================================
              1. SECCIÓN SUPERIOR: PERFILES FABI Y JHON + API REAL
@@ -950,8 +1523,7 @@
                     tabindex="0"
                     aria-expanded="false"
                     aria-label="Ampliar fotografía de FABI"
-                    title="Haz clic para ampliar"
-                    class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-white/80 backdrop-blur-md border border-white/85 shadow-md flex-shrink-0 cursor-pointer"
+                    class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-pastel-100/65 backdrop-blur-md border border-pastel-200/85 shadow-md flex-shrink-0 cursor-pointer"
                 >
                     <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-pastel-200">
                         <img 
@@ -963,25 +1535,23 @@
                     <!-- Círculo indicador de estado de conexión FABI -->
                     <span 
                         id="fabi-status-dot"
-                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-white z-10" 
-                        title="Verificando estado..."
+                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-pastel-100 z-10" 
                         aria-label="Estado de FABI"
                     ></span>
                 </div>
 
-                <!-- Imagen de FABI ampliada hacia abajo al hacer clic (Conserva proporciones originales) -->
+                <!-- Imagen de FABI ampliada hacia abajo al hacer clic (Conserva proporciones originales con efecto Glass) -->
                 <div id="fabi-avatar-popover" class="fabi-avatar-popover" onclick="toggleFabiAvatarExpand(event)">
-                    <div class="relative rounded-[16px] overflow-hidden bg-pastel-100">
+                    <div class="relative rounded-[16px] overflow-hidden bg-pastel-200/20 border border-pastel-200/60">
                         <img 
                             src="https://xatimg.com/image/ZBI9bMWy0p6h.png" 
                             alt="FABI Fotografía Completa" 
-                            class="w-full h-auto block object-contain rounded-[16px] cursor-pointer"
+                            class="w-full h-auto block object-contain rounded-[15px] cursor-pointer"
                         >
                         <button 
                             type="button"
                             onclick="closeFabiAvatarExpand(event)"
-                            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center backdrop-blur-sm transition"
-                            title="Cerrar vista ampliada"
+                            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-pastel-600/45 hover:bg-pastel-600/70 border border-pastel-200/75 text-white flex items-center justify-center backdrop-blur-md transition"
                             aria-label="Cerrar vista ampliada"
                         >
                             <i class="ph-bold ph-x text-xs"></i>
@@ -989,9 +1559,9 @@
                     </div>
                 </div>
 
-                <div class="leading-tight">
-                    <div class="flex items-center gap-1.5">
-                        <h2 class="font-bold text-lg sm:text-xl tracking-wide flex items-center gap-2.5">
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 h-7 sm:h-8">
+                        <h2 class="font-bold text-lg sm:text-xl tracking-wide flex items-center gap-2.5 leading-none">
                             <span class="fabi-gradient-name">FABI</span>
                             <img 
                                 src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/flasgco.webp" 
@@ -1000,9 +1570,9 @@
                             >
                         </h2>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span id="fabi-status-text" class="text-white/95 text-xs sm:text-sm font-normal tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
-                            Conectando...
+                    <div class="flex items-center gap-1.5 h-4 mt-0.5">
+                        <span id="fabi-status-text" class="text-white/95 text-[11px] sm:text-xs font-normal leading-none tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
+                            Desconectado
                         </span>
                     </div>
                 </div>
@@ -1010,7 +1580,7 @@
 
             <!-- Círculo de Perfil — JHON (Mismo tamaño exacto, alineado junto a FABI, Icono Saturno -> xat.me/jhon y API Real) -->
             <div class="flex items-center gap-3.5">
-                <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-white/80 backdrop-blur-md border border-white/85 shadow-md flex-shrink-0">
+                <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[2.5px] bg-pastel-100/65 backdrop-blur-md border border-pastel-200/85 shadow-md flex-shrink-0">
                     <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-pastel-200">
                         <img 
                             src="https://xatimg.com/image/MjeWd1SYnYh9.png" 
@@ -1038,15 +1608,14 @@
                     <!-- Círculo indicador de estado de conexión JHON -->
                     <span 
                         id="jhon-status-dot"
-                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-white z-10" 
-                        title="Verificando estado..."
+                        class="status-dot-offline absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-pastel-100 z-10" 
                         aria-label="Estado de Jhon"
                     ></span>
                 </div>
 
-                <div class="leading-tight">
-                    <div class="flex items-center gap-1.5">
-                        <h2 class="jhon-gradient-name font-bold text-lg sm:text-xl tracking-wide">
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 h-7 sm:h-8">
+                        <h2 class="jhon-gradient-name font-bold text-lg sm:text-xl tracking-wide leading-none">
                             Jhon
                         </h2>
                         <!-- Icono interactivo de Saturno exclusivo de JHON redirigiendo a https://xat.me/jhon -->
@@ -1054,16 +1623,15 @@
                             href="https://xat.me/jhon" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="w-6 h-6 rounded-full bg-white/30 hover:bg-white/55 border border-white/60 flex items-center justify-center text-white transition transform hover:scale-110 shadow-sm backdrop-blur-sm"
-                            title="Ir a xat.me/jhon"
+                            class="w-6 h-6 rounded-full bg-pastel-200/35 hover:bg-pastel-200/60 border border-pastel-200/75 flex items-center justify-center text-white transition transform hover:scale-110 shadow-sm backdrop-blur-sm"
                             aria-label="Ir a xat.me/jhon"
                         >
                             <i class="ph-fill ph-planet text-sm"></i>
                         </a>
                     </div>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span id="jhon-status-text" class="text-white/95 text-xs sm:text-sm font-normal tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
-                            Conectando...
+                    <div class="flex items-center gap-1.5 h-4 mt-0.5">
+                        <span id="jhon-status-text" class="text-white/95 text-[11px] sm:text-xs font-normal leading-none tracking-wide drop-shadow-[0_1px_2px_rgba(140,63,93,0.4)]">
+                            Desconectado
                         </span>
                     </div>
                 </div>
@@ -1095,22 +1663,22 @@
                         </div>
                     </div>
 
-                    <!-- Texto pequeño de identificación debajo del render de texto -->
+                    <!-- Texto pequeño de identificación debajo del render de texto con Efecto Gradiente -->
                     <div class="pt-0.5 pl-1">
-                        <span class="text-white/95 text-xs sm:text-[13px] font-semibold tracking-[0.14em] drop-shadow-[0_1px_3px_rgba(138,62,92,0.45)] select-none">
+                        <span class="fabi-gradient-name text-xs sm:text-[13px] font-bold tracking-[0.14em] select-none">
                             Faby (46197719)
                         </span>
                     </div>
                 </div>
 
-                <!-- Render Principal de FABI con Efecto Premium Soft Glow -->
-                <div class="fabi-render-stage mt-6 md:mt-0 md:absolute md:right-3 lg:right-6 md:bottom-0 z-20 flex justify-center md:block">
+                <!-- Render Principal de FABI alineado al ras del borde inferior marcado en rojo -->
+                <div class="fabi-render-stage mt-6 -mb-8 sm:-mb-11 md:mb-0 md:mt-0 md:absolute md:right-3 lg:right-6 md:-bottom-[10px] z-20 flex justify-center items-end md:block">
                     <div id="fabi-glow-card" class="fabi-glow-wrap">
                         <div class="fabi-soft-aura" aria-hidden="true"></div>
                         <img 
                             src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/render1.png" 
                             alt="FABI Main Render" 
-                            class="fabi-render w-[230px] sm:w-[270px] md:w-[305px] lg:w-[325px] max-h-[360px] object-contain object-bottom select-none block"
+                            class="fabi-render w-[230px] sm:w-[270px] md:w-[305px] lg:w-[325px] max-h-[360px] object-contain object-bottom select-none block align-bottom"
                         >
                     </div>
                 </div>
@@ -1140,19 +1708,19 @@
                         <div class="flex-1 w-full flex flex-col justify-center">
                             <div class="flex items-start justify-between gap-2 mb-1.5">
                                 <div>
-                                    <h3 id="player-title" class="text-[#2f1a23] font-bold text-base sm:text-[17px] leading-tight">
+                                    <h3 id="player-title" class="player-title-gradient font-bold text-base sm:text-[17px] leading-tight">
                                         Engel
                                     </h3>
-                                    <p id="player-artist" class="text-[#6e4658] text-xs sm:text-[13px] font-medium leading-tight mt-0.5 uppercase tracking-wider">
+                                    <p id="player-artist" class="player-sub-gradient block text-xs sm:text-[13px] font-semibold leading-tight mt-0.5 uppercase tracking-wider">
                                         RAMMSTEIN
                                     </p>
                                 </div>
-                                <button id="player-like-btn" onclick="togglePlayerLike()" class="text-pastel-500 hover:text-pastel-600 transition transform active:scale-125 drop-shadow-sm" title="Favorito">
-                                    <i class="ph-fill ph-heart text-lg sm:text-xl text-pastel-500"></i>
+                                <button id="player-like-btn" onclick="togglePlayerLike()" class="ios-glass-btn w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" aria-label="Favorito">
+                                    <i class="ph-fill ph-heart text-sm sm:text-base text-pastel-100"></i>
                                 </button>
                             </div>
 
-                            <!-- Barra de Progreso + Tiempos -->
+                            <!-- Barra de Progreso + Tiempos con Efecto Gradiente -->
                             <div class="w-full mt-1.5">
                                 <input 
                                     id="player-progress" 
@@ -1163,28 +1731,28 @@
                                     class="pastel-range w-full"
                                     aria-label="Progreso de canción"
                                 >
-                                <div class="flex items-center justify-between text-[10px] sm:text-[11px] font-semibold text-[#6e4658] mt-1">
-                                    <span id="player-current-time">0:00</span>
-                                    <span id="player-duration">0:30</span>
+                                <div class="flex items-center justify-between text-[10px] sm:text-[11px] font-bold mt-1">
+                                    <span id="player-current-time" class="player-sub-gradient">0:00</span>
+                                    <span id="player-duration" class="player-sub-gradient">0:30</span>
                                 </div>
                             </div>
 
-                            <!-- Controles Reproducción, Pausa y Navegación Circular 3D -->
-                            <div class="flex items-center justify-center gap-6 my-1.5 text-pastel-600 drop-shadow-sm">
-                                <button onclick="prevTrack3D()" class="hover:text-pastel-700 transition transform hover:scale-110" title="Anterior">
-                                    <i class="ph-fill ph-rewind text-xl"></i>
+                            <!-- Controles Reproducción, Pausa y Navegación Circular 3D con efecto Liquid Glass iOS 26 -->
+                            <div class="flex items-center justify-center gap-4 my-2">
+                                <button type="button" onclick="prevTrack3D()" class="ios-glass-btn w-9 h-9 rounded-full flex items-center justify-center" aria-label="Canción anterior">
+                                    <i class="ph-fill ph-rewind text-base"></i>
                                 </button>
-                                <button id="player-play-btn" onclick="togglePlayMusic()" class="w-9 h-9 rounded-full bg-pastel-500 text-white hover:bg-pastel-600 flex items-center justify-center shadow-sm transition transform hover:scale-105" title="Reproducir / Pausar">
-                                    <i id="player-play-icon" class="ph-fill ph-play text-base"></i>
+                                <button type="button" id="player-play-btn" onclick="togglePlayMusic()" class="ios-glass-btn ios-glass-btn-primary w-10 h-10 rounded-full flex items-center justify-center" aria-label="Reproducir o Pausar">
+                                    <i id="player-play-icon" class="ph-fill ph-play text-lg"></i>
                                 </button>
-                                <button onclick="nextTrack3D()" class="hover:text-pastel-700 transition transform hover:scale-110" title="Siguiente">
-                                    <i class="ph-fill ph-fast-forward text-xl"></i>
+                                <button type="button" onclick="nextTrack3D()" class="ios-glass-btn w-9 h-9 rounded-full flex items-center justify-center" aria-label="Siguiente canción">
+                                    <i class="ph-fill ph-fast-forward text-base"></i>
                                 </button>
                             </div>
 
-                            <!-- Control de Volumen Inferior -->
-                            <div class="flex items-center gap-2 mt-1">
-                                <i class="ph-fill ph-speaker-low text-xs text-pastel-600 drop-shadow-sm"></i>
+                            <!-- Control de Volumen Inferior con cápsula Liquid Glass iOS 26 -->
+                            <div class="ios-glass-pill rounded-full px-3 py-1.5 flex items-center gap-2.5 mt-1">
+                                <i class="ph-fill ph-speaker-low text-xs text-white drop-shadow-sm"></i>
                                 <input 
                                     id="player-volume" 
                                     type="range" 
@@ -1195,7 +1763,7 @@
                                     class="pastel-range flex-1"
                                     aria-label="Volumen"
                                 >
-                                <i class="ph-fill ph-speaker-high text-xs text-pastel-600 drop-shadow-sm"></i>
+                                <i class="ph-fill ph-speaker-high text-xs text-white drop-shadow-sm"></i>
                             </div>
                         </div>
                     </div>
@@ -1206,24 +1774,26 @@
                 </div>
 
                 <!-- FILA INFERIOR IZQUIERDA: TARJETA SIGNO ZODIACAL (PISCIS) + RELOJ FUNCIONAL -->
-                <div class="grid grid-cols-12 gap-4 sm:gap-5 items-stretch">
+                <div class="grid grid-cols-12 gap-3 sm:gap-5 items-stretch">
                     
                     <!-- 5. INFORMACIÓN PERSONAL – SIGNO ZODIACAL PISCIS -->
-                    <div id="pisces-info-card" class="col-span-7 glass-pink-solid rounded-[26px] sm:rounded-[28px] p-5 sm:p-6 text-white flex flex-col justify-between min-h-[185px] sm:min-h-[195px] relative overflow-hidden">
+                    <div id="pisces-info-card" class="col-span-7 glass-pink-solid rounded-[26px] sm:rounded-[28px] p-4 sm:p-6 text-white flex flex-col justify-between min-h-[175px] sm:min-h-[195px] relative overflow-hidden">
                         <div class="flex items-start justify-between gap-2">
                             <div>
-                                <div class="text-2xl sm:text-[32px] font-bold leading-none tracking-tight">
+                                <div class="pisces-gradient-text text-2xl sm:text-[32px] font-bold leading-none tracking-tight">
                                     Piscis
                                 </div>
-                                <div class="text-xs sm:text-sm font-medium text-white/95 mt-1.5 tracking-wide">
-                                    Signo Zodiacal ♓
+                                <div class="mt-1.5">
+                                    <span class="pisces-gradient-text text-xs sm:text-sm font-semibold tracking-wide">
+                                        Signo Zodiacal
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex items-end justify-between mt-4">
                             <!-- Icono Zodiacal de Piscis (icon2.png) sin efecto Shine ni animaciones -->
-                            <div title="Piscis">
+                            <div>
                                 <img 
                                     src="https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/icon2.png" 
                                     alt="Piscis Icono Zodiacal" 
@@ -1231,38 +1801,38 @@
                                 >
                             </div>
 
-                            <!-- Tres puntos inferiores originales -->
+                            <!-- Tres puntos inferiores en rosa pastel claro -->
                             <div class="flex items-center gap-2 pb-1">
-                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-pastel-100 shadow-sm"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-pastel-100 shadow-sm"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-pastel-100 shadow-sm"></span>
                             </div>
                         </div>
                     </div>
 
                     <!-- 7. RELOJ Y CALENDARIO FUNCIONAL EN ESPAÑOL CON GLASSMORPHISM -->
-                    <div id="clock-info-card" class="col-span-5 clock-glass-card rounded-[26px] sm:rounded-[28px] p-4 sm:p-5 flex flex-col justify-center min-h-[185px] sm:min-h-[195px] relative overflow-hidden">
-                        <!-- Hora, Minutos, Segundos y a. m. / p. m. en tiempo real -->
-                        <div class="flex items-baseline flex-wrap gap-x-2 text-pastel-600 drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
-                            <span id="clock-hm" class="text-3xl sm:text-[38px] font-extrabold tracking-tight leading-none">
+                    <div id="clock-info-card" class="col-span-5 clock-glass-card rounded-[26px] sm:rounded-[28px] p-3.5 sm:p-5 flex flex-col justify-center min-h-[175px] sm:min-h-[195px] relative overflow-hidden">
+                        <!-- Hora, Minutos, Segundos y a. m. / p. m. en tiempo real con gradiente luminoso -->
+                        <div class="flex items-baseline flex-wrap gap-x-1.5 sm:gap-x-2">
+                            <span id="clock-hm" class="clock-bright-gradient text-2xl sm:text-[38px] font-extrabold tracking-tight leading-none">
                                 08:30
                             </span>
                             <div class="flex flex-col leading-tight">
-                                <span id="clock-sec" class="text-xs sm:text-[13px] font-bold text-pastel-700">
+                                <span id="clock-sec" class="clock-bright-gradient text-xs sm:text-[13px] font-bold">
                                     00s
                                 </span>
-                                <span id="clock-ampm" class="text-xs sm:text-[13px] font-extrabold uppercase">
+                                <span id="clock-ampm" class="clock-bright-gradient text-xs sm:text-[13px] font-extrabold uppercase">
                                     p. m.
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Día de la semana y Fecha + Mes + Año en español (es-MX) -->
-                        <div class="mt-3 text-[#2f1a23] drop-shadow-[0_1px_1px_rgba(255,255,255,0.65)]">
-                            <div id="clock-weekday" class="text-sm sm:text-[15px] font-semibold leading-tight">
+                        <!-- Día de la semana y Fecha + Mes + Año en español (es-MX) con alto contraste y gradiente -->
+                        <div class="mt-3">
+                            <div id="clock-weekday" class="clock-date-gradient text-sm sm:text-[15px] font-bold leading-tight">
                                 Sábado
                             </div>
-                            <div id="clock-month-year" class="text-[15px] sm:text-[17px] font-extrabold leading-tight mt-0.5">
+                            <div id="clock-month-year" class="clock-bright-gradient text-[15px] sm:text-[17px] font-extrabold leading-tight mt-0.5">
                                 14 de Noviembre 2026
                             </div>
                         </div>
@@ -1324,12 +1894,17 @@
         </div>
 
         <!-- ==========================================
-             5. FIRMA EN EL FOOTER
+             5. FIRMA EN EL FOOTER CON GLOW Y ENLACE A XAT.ME/EAM96
              ========================================== -->
         <footer class="mt-8 sm:mt-10 text-center select-none">
-            <p class="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#FFFFFF] drop-shadow-[0_1px_3px_rgba(140,63,93,0.55)]">
+            <a 
+                href="https://xat.me/eam96" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="footer-signature-link text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase"
+            >
                 XATFRAME DESIGN © EAM96
-            </p>
+            </a>
         </footer>
 
     </main>
@@ -1534,21 +2109,19 @@
 
             // Reiniciar clases de color del indicador manteniendo sus dimensiones
             dotEl.classList.remove('status-dot-online', 'status-dot-away', 'status-dot-offline');
+            dotEl.removeAttribute('title');
 
             if (normalized === 'online') {
                 dotEl.classList.add('status-dot-online');
-                dotEl.title = 'En línea';
                 textEl.textContent = 'En línea';
             } else if (normalized === 'available') {
                 // Available = Ausente (Naranja), NO conectado
                 dotEl.classList.add('status-dot-away');
-                dotEl.title = 'Ausente';
                 textEl.textContent = 'Ausente';
             } else {
-                // Estado desconocido, offline o error de red
+                // Estado desconectado, offline o sin respuesta: texto Desconectado + círculo rojo parpadeante
                 dotEl.classList.add('status-dot-offline');
-                dotEl.title = 'No disponible';
-                textEl.textContent = 'No disponible';
+                textEl.textContent = 'Desconectado';
             }
         }
 
@@ -1674,8 +2247,8 @@
                             class="w-9 h-9 rounded-lg object-cover flex-shrink-0 border border-white/80 shadow-sm"
                         >
                         <div class="min-w-0 flex-1 leading-tight">
-                            <div class="text-[#2f1a23] font-bold text-xs sm:text-[13px] truncate">${track.title}</div>
-                            <div class="text-[#6e4658] text-[10px] sm:text-[11px] font-medium tracking-wider uppercase truncate mt-0.5">${track.artist}</div>
+                            <div class="player-title-gradient font-bold text-xs sm:text-[13px] truncate block">${track.title}</div>
+                            <div class="player-sub-gradient text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase truncate block mt-0.5">${track.artist}</div>
                         </div>
                     </button>
                 `).join('');
@@ -1797,7 +2370,7 @@
         function syncPlayIcon() {
             const icon = document.getElementById('player-play-icon');
             if (!icon) return;
-            icon.className = isPlayingMusic ? 'ph-fill ph-pause text-base' : 'ph-fill ph-play text-base';
+            icon.className = isPlayingMusic ? 'ph-fill ph-pause text-lg' : 'ph-fill ph-play text-lg';
         }
 
         function togglePlayMusic() {
@@ -1841,7 +2414,7 @@
             const icon = btn.querySelector('i');
             if (icon) {
                 icon.classList.toggle('text-white');
-                icon.classList.toggle('text-pastel-500');
+                icon.classList.toggle('text-pastel-100');
             }
         }
 
@@ -2151,21 +2724,405 @@
             }, { passive: true });
         })();
 
-        // 7. Bloqueo disuasorio de teclas de desarrollador (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
-        document.addEventListener('keydown', (e) => {
-            const key = (e.key || '').toUpperCase();
-            const isF12 = e.key === 'F12' || e.keyCode === 123;
-            const isCtrlShiftI = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'I';
-            const isCtrlShiftJ = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'J';
-            const isCtrlShiftC = (e.ctrlKey || e.metaKey) && e.shiftKey && key === 'C';
-            const isCtrlU = (e.ctrlKey || e.metaKey) && !e.shiftKey && key === 'U';
+        // 6.9 Simulación Liquid WebGL (Navier-Stokes Shaders) sobre background3.png + Clic en el fondo para ocultar/mostrar todo el Hub
+        (function initWebGLLiquidBackground() {
+            const canvasEl = document.getElementById('liquid-bg-canvas');
+            if (!canvasEl) return;
 
-            if (isF12 || isCtrlShiftI || isCtrlShiftJ || isCtrlShiftC || isCtrlU) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
+            const params = {
+                cursorSize: 2,
+                cursorPower: 24,
+                distortionPower: 0.4
+            };
+
+            const pointer = {
+                x: 0.65 * window.innerWidth,
+                y: 0.5 * window.innerHeight,
+                dx: 0,
+                dy: 0,
+                moved: false
+            };
+
+            const res = { w: 256, h: 256 };
+            let outputColor, velocity, divergence, pressure, imageTexture;
+            let imgRatio = 16 / 9;
+            let isPreview = true;
+            let isImageLoaded = false;
+
+            const gl = canvasEl.getContext('webgl', { alpha: false, depth: false, stencil: false, antialias: false }) ||
+                       canvasEl.getContext('experimental-webgl');
+            if (!gl) return;
+
+            const floatExt = gl.getExtension('OES_texture_float');
+            const halfFloatExt = gl.getExtension('OES_texture_half_float');
+            const fboTexType = floatExt ? gl.FLOAT : (halfFloatExt ? halfFloatExt.HALF_FLOAT_OES : gl.UNSIGNED_BYTE);
+
+            function createShader(sourceCode, type) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, sourceCode);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
             }
-        });
+
+            function createShaderProgram(vertexShader, fragmentShader) {
+                const program = gl.createProgram();
+                gl.attachShader(program, vertexShader);
+                gl.attachShader(program, fragmentShader);
+                gl.linkProgram(program);
+                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                    return null;
+                }
+                return program;
+            }
+
+            function getUniforms(program) {
+                const uniforms = {};
+                const uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+                for (let i = 0; i < uniformCount; i++) {
+                    const uniformName = gl.getActiveUniform(program, i).name;
+                    uniforms[uniformName] = gl.getUniformLocation(program, uniformName);
+                }
+                return uniforms;
+            }
+
+            const vertexShader = createShader(document.getElementById('vertShader').innerHTML, gl.VERTEX_SHADER);
+
+            function createProgram(elId) {
+                const shader = createShader(document.getElementById(elId).innerHTML, gl.FRAGMENT_SHADER);
+                const program = createShaderProgram(vertexShader, shader);
+                const uniforms = getUniforms(program);
+                return { program, uniforms };
+            }
+
+            const splatProgram = createProgram('fragShaderPoint');
+            const divergenceProgram = createProgram('fragShaderDivergence');
+            const pressureProgram = createProgram('fragShaderPressure');
+            const gradientSubtractProgram = createProgram('fragShaderGradientSubtract');
+            const advectionProgram = createProgram('fragShaderAdvection');
+            const displayProgram = createProgram('fragShaderOutputShader');
+
+            // Buffers reutilizables de geometría para máximo rendimiento (sin crear buffers nuevos en cada frame)
+            const quadVertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]), gl.STATIC_DRAW);
+
+            const quadIndexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndexBuffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2, 0, 2, 3]), gl.STATIC_DRAW);
+
+            function blit(target) {
+                gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexBuffer);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndexBuffer);
+                gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(0);
+
+                if (target == null) {
+                    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                } else {
+                    gl.viewport(0, 0, target.width, target.height);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+                }
+                gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+            }
+
+            function createFBO(w, h, texType) {
+                gl.activeTexture(gl.TEXTURE0);
+                const texture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, texType, null);
+
+                const fbo = gl.createFramebuffer();
+                gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+                const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+                if (status !== gl.FRAMEBUFFER_COMPLETE && texType !== gl.UNSIGNED_BYTE) {
+                    gl.deleteFramebuffer(fbo);
+                    gl.deleteTexture(texture);
+                    return createFBO(w, h, halfFloatExt && texType === gl.FLOAT ? halfFloatExt.HALF_FLOAT_OES : gl.UNSIGNED_BYTE);
+                }
+
+                gl.viewport(0, 0, w, h);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+
+                return {
+                    fbo,
+                    width: w,
+                    height: h,
+                    attach(id) {
+                        gl.activeTexture(gl.TEXTURE0 + id);
+                        gl.bindTexture(gl.TEXTURE_2D, texture);
+                        return id;
+                    }
+                };
+            }
+
+            function createDoubleFBO(w, h) {
+                let fbo1 = createFBO(w, h, fboTexType);
+                let fbo2 = createFBO(w, h, fboTexType);
+
+                return {
+                    width: w,
+                    height: h,
+                    texelSizeX: 1.0 / w,
+                    texelSizeY: 1.0 / h,
+                    read: () => fbo1,
+                    write: () => fbo2,
+                    swap() {
+                        const temp = fbo1;
+                        fbo1 = fbo2;
+                        fbo2 = temp;
+                    }
+                };
+            }
+
+            function initFBOs() {
+                outputColor = createDoubleFBO(res.w, res.h);
+                velocity = createDoubleFBO(res.w, res.h);
+                divergence = createFBO(res.w, res.h, fboTexType);
+                pressure = createDoubleFBO(res.w, res.h);
+            }
+
+            function resizeCanvas() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvasEl.width = Math.round(window.innerWidth * dpr);
+                canvasEl.height = Math.round(window.innerHeight * dpr);
+                const ratio = window.innerWidth / Math.max(1, window.innerHeight);
+                res.w = Math.max(192, Math.round(320 * ratio));
+                res.h = 320;
+            }
+
+            function loadImage(src) {
+                const image = new Image();
+                image.crossOrigin = 'anonymous';
+                image.src = src;
+                image.onload = () => {
+                    imgRatio = image.naturalWidth / Math.max(1, image.naturalHeight);
+                    imageTexture = gl.createTexture();
+                    gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+                    isImageLoaded = true;
+                };
+            }
+
+            function updatePointerPosition(eX, eY, boost = 6) {
+                pointer.moved = true;
+                pointer.dx = boost * (eX - pointer.x);
+                pointer.dy = boost * (eY - pointer.y);
+                pointer.x = eX;
+                pointer.y = eY;
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                isPreview = false;
+                updatePointerPosition(e.clientX, e.clientY, 6);
+            }, { passive: true });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!e.targetTouches || !e.targetTouches[0]) return;
+                isPreview = false;
+                updatePointerPosition(e.targetTouches[0].clientX, e.targetTouches[0].clientY, 6);
+            }, { passive: true });
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                initFBOs();
+                if (imageTexture) {
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+                }
+            });
+
+            // Al hacer clic en el background se esconde todo el hub y solo queda el fondo con el efecto liquid; al volver a dar clic reaparece todo
+            document.addEventListener('click', (e) => {
+                isPreview = false;
+                updatePointerPosition(e.clientX, e.clientY, 10);
+
+                const introScreen = document.getElementById('intro-screen');
+                if (introScreen && !introScreen.classList.contains('is-hidden')) return;
+
+                if (document.body.classList.contains('hub-is-hidden')) {
+                    document.body.classList.remove('hub-is-hidden');
+                    return;
+                }
+
+                const interactiveZone = e.target.closest(
+                    'a, button, input, [role="button"], .glass-pink-solid, .glass-white-bordered, .clock-glass-card, .gif-card, .fabi-glow-wrap, #fabi-avatar-trigger, #fabi-avatar-popover, #jhon-married-badge, header h2, header span, header img, footer a'
+                );
+                if (interactiveZone) return;
+
+                document.body.classList.add('hub-is-hidden');
+            });
+
+            function render(t) {
+                const dt = 1 / 60;
+
+                if (t && isPreview) {
+                    updatePointerPosition(
+                        (0.5 + 0.25 * Math.sin(0.002 * t - 3.14)) * window.innerWidth,
+                        (0.5 + 0.1 * Math.sin(0.005 * t) * Math.cos(0.002 * t)) * window.innerHeight,
+                        6
+                    );
+                }
+
+                if (pointer.moved) {
+                    if (!isPreview) {
+                        pointer.moved = false;
+                    }
+
+                    gl.useProgram(splatProgram.program);
+                    gl.uniform1i(splatProgram.uniforms.u_input_texture, velocity.read().attach(1));
+                    gl.uniform1f(splatProgram.uniforms.u_ratio, canvasEl.width / Math.max(1, canvasEl.height));
+                    gl.uniform2f(splatProgram.uniforms.u_point, pointer.x / Math.max(1, window.innerWidth), 1 - pointer.y / Math.max(1, window.innerHeight));
+                    gl.uniform3f(splatProgram.uniforms.u_point_value, pointer.dx, -pointer.dy, 0);
+                    gl.uniform1f(splatProgram.uniforms.u_point_size, params.cursorSize * 0.001);
+
+                    blit(velocity.write());
+                    velocity.swap();
+
+                    gl.uniform1i(splatProgram.uniforms.u_input_texture, outputColor.read().attach(1));
+                    gl.uniform3f(splatProgram.uniforms.u_point_value, params.cursorPower * 0.001, 0, 0);
+                    blit(outputColor.write());
+                    outputColor.swap();
+                }
+
+                gl.useProgram(divergenceProgram.program);
+                gl.uniform2f(divergenceProgram.uniforms.u_texel, velocity.texelSizeX, velocity.texelSizeY);
+                gl.uniform1i(divergenceProgram.uniforms.u_velocity_texture, velocity.read().attach(1));
+                blit(divergence);
+
+                gl.useProgram(pressureProgram.program);
+                gl.uniform2f(pressureProgram.uniforms.u_texel, velocity.texelSizeX, velocity.texelSizeY);
+                gl.uniform1i(pressureProgram.uniforms.u_divergence_texture, divergence.attach(1));
+                for (let i = 0; i < 16; i++) {
+                    gl.uniform1i(pressureProgram.uniforms.u_pressure_texture, pressure.read().attach(2));
+                    blit(pressure.write());
+                    pressure.swap();
+                }
+
+                gl.useProgram(gradientSubtractProgram.program);
+                gl.uniform2f(gradientSubtractProgram.uniforms.u_texel, velocity.texelSizeX, velocity.texelSizeY);
+                gl.uniform1i(gradientSubtractProgram.uniforms.u_pressure_texture, pressure.read().attach(1));
+                gl.uniform1i(gradientSubtractProgram.uniforms.u_velocity_texture, velocity.read().attach(2));
+                blit(velocity.write());
+                velocity.swap();
+
+                gl.useProgram(advectionProgram.program);
+                gl.uniform2f(advectionProgram.uniforms.u_texel, velocity.texelSizeX, velocity.texelSizeY);
+                gl.uniform2f(advectionProgram.uniforms.u_output_textel, velocity.texelSizeX, velocity.texelSizeY);
+                gl.uniform1i(advectionProgram.uniforms.u_velocity_texture, velocity.read().attach(1));
+                gl.uniform1i(advectionProgram.uniforms.u_input_texture, velocity.read().attach(1));
+                gl.uniform1f(advectionProgram.uniforms.u_dt, dt);
+                gl.uniform1f(advectionProgram.uniforms.u_dissipation, 0.97);
+                blit(velocity.write());
+                velocity.swap();
+
+                gl.useProgram(advectionProgram.program);
+                gl.uniform2f(advectionProgram.uniforms.u_output_textel, outputColor.texelSizeX, outputColor.texelSizeY);
+                gl.uniform1i(advectionProgram.uniforms.u_input_texture, outputColor.read().attach(2));
+                gl.uniform1f(advectionProgram.uniforms.u_dt, 8 * dt);
+                gl.uniform1f(advectionProgram.uniforms.u_dissipation, 0.98);
+                blit(outputColor.write());
+                outputColor.swap();
+
+                if (isImageLoaded && imageTexture) {
+                    gl.useProgram(displayProgram.program);
+                    gl.uniform2f(displayProgram.uniforms.u_point, pointer.x / Math.max(1, window.innerWidth), 1 - pointer.y / Math.max(1, window.innerHeight));
+                    gl.uniform2f(displayProgram.uniforms.u_texel, velocity.texelSizeX, velocity.texelSizeY);
+                    gl.uniform1i(displayProgram.uniforms.u_velocity_texture, velocity.read().attach(2));
+                    gl.uniform1f(displayProgram.uniforms.u_ratio, canvasEl.width / Math.max(1, canvasEl.height));
+                    gl.uniform1f(displayProgram.uniforms.u_img_ratio, imgRatio);
+                    gl.uniform1f(displayProgram.uniforms.u_disturb_power, params.distortionPower);
+                    gl.uniform1i(displayProgram.uniforms.u_output_texture, outputColor.read().attach(1));
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+                    gl.uniform1i(displayProgram.uniforms.u_text_texture, 0);
+
+                    blit(null);
+                }
+
+                requestAnimationFrame(render);
+            }
+
+            resizeCanvas();
+            initFBOs();
+            loadImage('https://raw.githubusercontent.com/eamxat/Fabigifs/refs/heads/main/background3.png');
+            requestAnimationFrame(render);
+        })();
+
+        // 7. Protección integral de código: eliminación de leyendas nativas (title), bloqueo de F12, clic derecho, atajos de inspección y consola
+        (function initCodeAndConsoleProtection() {
+            // Elimina cualquier atributo title residual para evitar leyendas nativas del navegador
+            document.querySelectorAll('[title]').forEach((el) => el.removeAttribute('title'));
+
+            // Bloqueo de clic derecho (menú contextual) y arrastre de imágenes/elementos
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                return false;
+            }, { capture: true });
+
+            document.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+                return false;
+            }, { capture: true });
+
+            // Bloqueo de combinaciones de teclado para abrir DevTools, consola, ver código fuente o guardar página
+            window.addEventListener('keydown', (e) => {
+                const key = (e.key || '').toUpperCase();
+                const code = e.keyCode || e.which;
+                const ctrlOrCmd = e.ctrlKey || e.metaKey;
+
+                const isF12 = e.key === 'F12' || code === 123;
+                const isDevToolsShortcut = ctrlOrCmd && e.shiftKey && ['I', 'J', 'C', 'K'].includes(key);
+                const isMacAltInspector = e.metaKey && e.altKey && ['I', 'J', 'C', 'U'].includes(key);
+                const isViewSourceOrSave = ctrlOrCmd && !e.shiftKey && ['U', 'S', 'P'].includes(key);
+
+                if (isF12 || isDevToolsShortcut || isMacAltInspector || isViewSourceOrSave) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            }, { capture: true });
+
+            // Neutralización y limpieza continua de métodos de consola
+            const noop = function () {};
+            const consoleMethods = ['log', 'debug', 'info', 'warn', 'error', 'table', 'dir', 'dirxml', 'trace', 'group', 'groupCollapsed', 'groupEnd', 'profile', 'profileEnd', 'count', 'assert'];
+            try {
+                if (window.console) {
+                    consoleMethods.forEach((method) => {
+                        if (typeof window.console[method] === 'function') {
+                            window.console[method] = noop;
+                        }
+                    });
+                }
+            } catch (_) {}
+
+            setInterval(() => {
+                try {
+                    if (window.console && typeof window.console.clear === 'function') {
+                        window.console.clear();
+                    }
+                } catch (_) {}
+            }, 1200);
+        })();
     </script>
 </body>
 </html>
